@@ -6,6 +6,8 @@
 
 // aca este tecxto no esta en la otra version
 
+//Nuevo comentario por Natalia Quenan 
+
 var edades=[20,50,6,84,12,10,78,33,30,21,1,0,73]
 var i=0
 var max=edades[0],min=edades[0],suma=0,prom
