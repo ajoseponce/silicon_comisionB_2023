@@ -1,4 +1,5 @@
-const jsonCompleto={
+const jsonCompleto=
+{
   "roles":[
      {
         "category":"MOD",
@@ -9,7 +10,7 @@ const jsonCompleto={
            },
            {
               "name":"Staff",
-              "color":null
+              "color": "gg"
            }
         ]
      },
@@ -32,10 +33,10 @@ const jsonCompleto={
      }
   ]
  }
- for(rol of jsonCompleto.roles){
+ for(rol of jsonCompleto.roles){ //recorrer json en la posicion Roles con el nombre o como ROL
    console.log("Categoria :", rol.category)
-   for(pepita of rol.users){
-      console.log('Usuario  :', pepita.name, ' color:', pepita.color)
+   for(user of rol.users){
+      console.log('Los Usuarios de la categoria :', user.name, ' color:', user.color)
    }
    
  }
