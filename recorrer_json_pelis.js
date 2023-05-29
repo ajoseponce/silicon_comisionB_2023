@@ -188,8 +188,9 @@ const json_pelis =
 }
 // console.log(json_pelis.info)
  for(it of json_pelis.item){ 
-    console.log("Nombre: ", it.name)
+    console.log("Nombre DE ITEM: ", it.name)
+    console.log("CANTIDAD DE ITEM: ", it.item.length)
     for (i of it.item){
-        console.log("Items: ", i.name, "y el request es ", i.request.url)
+        console.log("Items: ", i.name, " la url es ", i.request.url, " y el metodo es ", i.request.method)
     }
 }
