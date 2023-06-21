@@ -52,7 +52,7 @@ UPDATE `comisionB2023`.`fabricantes` SET `estado` = 'B' WHERE `id_fabricante` = 
 //listado de tipos de equipos
 SELECT * FROM comisionB2023.tipos_equipo
 
-//insertar fabrica 
+//insertar tipos de equipo 
 INSERT INTO `comisionB2023`.`tipos_equipo` (`nombre`) VALUES ('prueba_tipo_uno');
 
 //editar un registro de la tabla tipos de equipos
@@ -65,7 +65,30 @@ DELETE FROM `comisionB2023`.`tipos_equipo` WHERE `id_tipos_equipo` = (id_tipos_e
 ALTER TABLE `comisionB2023`.`tipos_equipo` 
 ADD COLUMN `estado` ENUM('A', 'B') NOT NULL DEFAULT 'A' AFTER `nombre`;
 
-//borrado logico de un registro en la tabla fabricantes
+//borrado logico de un registro en la tabla tipos_equipo
 UPDATE `comisionB2023`.`tipos_equipo` SET `estado` = 'B' WHERE `id_tipos_equipo` = id_tipos_equipo;
+
+/********************************************/
+
+/*********************UBICACIONES***********************/
+
+//listado de ubicaciones
+SELECT * FROM comisionB2023.ubicaciones
+
+//insertar ubicaciones 
+INSERT INTO `comisionB2023`.`ubicaciones` (`nombre`) VALUES ('prueba_ubicacion');
+
+//editar un registro de la tabla ubicaciones
+UPDATE `comisionB2023`.`ubicaciones` SET `nombre` = (texto_a _editar) WHERE `id_ubicacion` = (id_ubicacion);
+
+//borrar fisicamente un ubicaciones
+DELETE FROM `comisionB2023`.`ubicaciones` WHERE `id_ubicacion` = (id_ubicacion);
+
+//modicacion de la tabla ubicaciones donde se agrega el campo "estado"
+ALTER TABLE `comisionB2023`.`ubicaciones` 
+ADD COLUMN `estado` ENUM('A', 'B') NOT NULL DEFAULT 'A' AFTER `nombre`;
+
+//borrado logico de un registro en la tabla ubicaciones
+UPDATE `comisionB2023`.`ubicaciones` SET `estado` = 'B' WHERE `id_ubicacion` = id_ubicacion;
 
 /********************************************/
