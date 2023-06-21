@@ -8,7 +8,7 @@ INNER JOIN comisionB2023.fabricantes AS f ON f.id_fabricante=m.id_fabricante
 
 //listado de modelos con filtro de fabricantes
 
-SELECT * FROM comisionB2023.modelos WHERE id_fabricante=(fabricante)
+SELECT * FROM comisionB2023.modelos WHERE id_modelo=(id_modelo)
 //insertar en la tabla modelos
 INSERT INTO `comisionB2023`.`modelos` (`nombre`, `id_fabricante`) VALUES ('Modelo4', '3');
 
@@ -45,6 +45,12 @@ ADD COLUMN `estado` ENUM('A', 'B') NOT NULL DEFAULT 'A' AFTER `nombre`;
 //borrado logico de un registro en la tabla fabricantes
 UPDATE `comisionB2023`.`fabricantes` SET `estado` = 'B' WHERE `id_fabricante` = id_fabricante;
 
+//listado de equipos por fabricantes
+SELECT e.id_equipo, e.nombre
+FROM fabricantes AS f
+INNER JOIN modelos AS m ON m.id_fabricante=f.id_fabricante 
+INNER JOIN equipos AS e ON e.id_modelo=m.id_modelo 
+WHERE f.id_fabricante=(variable)
 /********************************************/
 
 /*********************TIPOS DE EQUIPO***********************/
@@ -68,6 +74,12 @@ ADD COLUMN `estado` ENUM('A', 'B') NOT NULL DEFAULT 'A' AFTER `nombre`;
 //borrado logico de un registro en la tabla tipos_equipo
 UPDATE `comisionB2023`.`tipos_equipo` SET `estado` = 'B' WHERE `id_tipos_equipo` = id_tipos_equipo;
 
+//lista de equipos por tipos de equipo
+SELECT e.id_equipo, e.nombre
+FROM comisionB2023.tipos_equipo AS te
+INNER JOIN equipos AS e ON e.id_tipo_equipo=te.id_tipo_equipo 
+WHERE te.id_tipo_equipo=(variable)
+
 /********************************************/
 
 /*********************UBICACIONES***********************/
@@ -90,5 +102,26 @@ ADD COLUMN `estado` ENUM('A', 'B') NOT NULL DEFAULT 'A' AFTER `nombre`;
 
 //borrado logico de un registro en la tabla ubicaciones
 UPDATE `comisionB2023`.`ubicaciones` SET `estado` = 'B' WHERE `id_ubicacion` = id_ubicacion;
+
+/********************************************/
+
+/*********************EQUIPOS***********************/
+ listado de equipos inicio
+
+SELECT e.id_equipo, e.nombre,te.nombre tipo_equipo ,concat_ws(' - ', m.nombre, f.nombre) modelo_fabricante, u.nombre lugar_ubicacion, e.serial, e.estado
+FROM equipos AS e
+INNER JOIN tipos_equipo AS te ON te.id_tipo_equipo=e.id_tipo_equipo
+LEFT JOIN modelos AS m ON m.id_modelo=e.id_modelo
+LEFT JOIN ubicaciones AS u ON u.id_ubicacion=e.id_ubicacion
+LEFT JOIN fabricantes AS f ON f.id_fabricante = m.id_fabricante
+WHERE 
+filtro1-->  e.nombre like '%(variable)%'
+filtro2-->  e.id_tipo_equipo = '(variable)'
+filtro2-->  e.id_tipo_equipo = '(variable)'
+filtro4-->  e.id_ubicacion = '(variable)'
+filtro5-->  e.serial like '%variable%'
+
+//cuando vamos a editar un equipo 
+SELECT * FROM comisionB2023.equipos WHERE id_equipo=(id_equipo)
 
 /********************************************/
