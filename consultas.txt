@@ -1,0 +1,71 @@
+/********************MODELOS*************************/
+//listado de modelos
+SELECT * FROM comisionB2023.modelos
+
+SELECT m.id_modelo, m.nombre, f.nombre AS fabricante
+FROM comisionB2023.modelos AS m
+INNER JOIN comisionB2023.fabricantes AS f ON f.id_fabricante=m.id_fabricante 
+
+//listado de modelos con filtro de fabricantes
+
+SELECT * FROM comisionB2023.modelos WHERE id_fabricante=(fabricante)
+//insertar en la tabla modelos
+INSERT INTO `comisionB2023`.`modelos` (`nombre`, `id_fabricante`) VALUES ('Modelo4', '3');
+
+//seleccionar un registro por un id determinado 
+SELECT * FROM comisionB2023.modelos WHERE id_modelo=(id_modelo)
+
+//modificacion de un registro en la tabla modelos 
+UPDATE `comisionB2023`.`modelos` SET `nombre` = '(texto_a_modificar)', `id_fabricante` = '(id_fabricante_modificar)' WHERE `id_modelo` = (id_modelo);
+
+//eliminar un registro  (borrado fisico)
+DELETE FROM `comisionB2023`.`modelos` WHERE `id_modelo` = (id_modelo);
+//borrado logico (es un update de estado )
+no aplica
+/*********************************************/
+
+/*********************FABRICANTES***********************/
+
+//listado de fabricantes
+SELECT * FROM comisionB2023.fabricantes 
+
+//insertar fabrica 
+INSERT INTO `comisionB2023`.`fabricantes` (`nombre`) VALUES ('prueba1');
+
+//editar un registro de la tabla fabricantes
+UPDATE `comisionB2023`.`fabricantes` SET `nombre` = (texto_a _editar) WHERE `id_fabricante` = (id_fabricante);
+
+//borrar fisicamente un registro
+DELETE FROM `comisionB2023`.`fabricantes` WHERE `id_fabricante` = id_fabricante;
+
+//modicacion de la tabla fabricantes donde se agrega el campo "estado"
+ALTER TABLE `comisionB2023`.`fabricantes` 
+ADD COLUMN `estado` ENUM('A', 'B') NOT NULL DEFAULT 'A' AFTER `nombre`;
+
+//borrado logico de un registro en la tabla fabricantes
+UPDATE `comisionB2023`.`fabricantes` SET `estado` = 'B' WHERE `id_fabricante` = id_fabricante;
+
+/********************************************/
+
+/*********************TIPOS DE EQUIPO***********************/
+
+//listado de tipos de equipos
+SELECT * FROM comisionB2023.tipos_equipo
+
+//insertar fabrica 
+INSERT INTO `comisionB2023`.`tipos_equipo` (`nombre`) VALUES ('prueba_tipo_uno');
+
+//editar un registro de la tabla tipos de equipos
+UPDATE `comisionB2023`.`tipos_equipo` SET `nombre` = (texto_a _editar) WHERE `id_tipo_equipo` = (id_tipo_equipo);
+
+//borrar fisicamente un registro
+DELETE FROM `comisionB2023`.`tipos_equipo` WHERE `id_tipos_equipo` = (id_tipos_equipo);
+
+//modicacion de la tabla tipos de equipos donde se agrega el campo "estado"
+ALTER TABLE `comisionB2023`.`tipos_equipo` 
+ADD COLUMN `estado` ENUM('A', 'B') NOT NULL DEFAULT 'A' AFTER `nombre`;
+
+//borrado logico de un registro en la tabla fabricantes
+UPDATE `comisionB2023`.`tipos_equipo` SET `estado` = 'B' WHERE `id_tipos_equipo` = id_tipos_equipo;
+
+/********************************************/
