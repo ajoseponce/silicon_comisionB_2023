@@ -125,3 +125,32 @@ filtro5-->  e.serial like '%variable%'
 SELECT * FROM comisionB2023.equipos WHERE id_equipo=(id_equipo)
 
 /********************************************/
+/*********************ROLES***********************/
+
+//listado de tipos de equipos
+SELECT * FROM comisionB2023.roles
+
+//insertar tipos de equipo 
+INSERT INTO `comisionB2023`.`roles` (`nombre`) VALUES ('Secretario');
+
+//editar un registro de la tabla roles
+UPDATE `comisionB2023`.`roles` SET `nombre` = (texto_a _editar) WHERE `id_rol` = (id_rol);
+
+//borrar fisicamente un registro de la tabla roles
+DELETE FROM `comisionB2023`.`roles` WHERE `id_rol` = (id_rol);
+
+//modicacion de la tabla roles donde se agrega el campo "estado"
+ALTER TABLE `comisionB2023`.`roles` 
+ADD COLUMN `estado` ENUM('A', 'B') NOT NULL DEFAULT 'A' AFTER `nombre`;
+
+//borrado logico de un registro en la tabla roles
+UPDATE `comisionB2023`.`roles` SET `estado` = 'B' WHERE `id_rol` = id_rol;
+
+//lista de equipos por tipos de equipo
+SELECT e.id_equipo, e.nombre
+FROM comisionB2023.tipos_equipo AS te
+INNER JOIN equipos AS e ON e.id_tipo_equipo=te.id_tipo_equipo 
+WHERE te.id_tipo_equipo=(variable)
+
+/********************************************/
+
