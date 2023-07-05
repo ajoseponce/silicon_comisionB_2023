@@ -7,8 +7,6 @@ app.set('puerto' , 2023);
 
 app.use(morgan('dev'))
 
-
-
 app.use(require('./routes/routes'))
 
 app.listen(app.get('puerto'), ()=>{

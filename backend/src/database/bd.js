@@ -9,7 +9,7 @@ const mysqlConeccion= mysql.createConnection({
 
 mysqlConeccion.connect(function(err){
     if(err){
-        console.log('Mi error es ', err)
+        console.log('Mi error de conexion es: ', err)
         return;
     }else{
         console.log('Mi coneccion se realizo correctamente!! y estoy muy feliz')
