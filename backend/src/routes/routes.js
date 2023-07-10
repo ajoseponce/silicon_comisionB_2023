@@ -4,6 +4,11 @@ const mysqlConnect = require('../database/bd')
 const bodyParser = require('body-parser');
 
 const router = express()
+
+// listar modelos
+router.get('/', (req , res)=>{
+    res.send('El sistema esta funcionando')
+})
 // listar modelos
 router.get('/modelos', (req , res)=>{
     mysqlConnect.query('SELECT m.id_modelo, m.nombre, f.nombre AS fabricante FROM modelos AS m INNER JOIN fabricantes AS f ON f.id_fabricante=m.id_fabricante', (error, registros)=>{
@@ -288,7 +293,7 @@ router.post('/ubicaciones', bodyParser.json(), (req , res)=>{
 })
 
 
-////////////////////edicion de tipos de equipo
+////////////////////edicion de ubicaciones
 // metodo PUT
 //URL /ubicaciones/:id_ubicacion
 //parametros : 
@@ -307,7 +312,7 @@ router.put('/ubicaciones/:id_ubicacion', bodyParser.json(), (req , res)=>{
    })
 })
 
-///////////////////eliminacion de tipos de equipo
+///////////////////eliminacion de ubicaciones
 // metodo DELETE
 //URL /ubicaciones/:id_ubicacion
 //parametros : 
@@ -322,5 +327,61 @@ router.delete('/ubicaciones/:id_ubicacion', bodyParser.json(), (req , res)=>{
         }
     })
 })
+
+//////////////////////////////
+//////////////////////////////
+//////////////////////////////
+//////////////////////////////
+// listar de equipos
+// metodo GET
+//URL /equipos
+//parametros : ninguno
+router.get('/equipos', (req , res)=>{
+    mysqlConnect.query("SELECT e.id_equipo, e.nombre,te.nombre tipo_equipo ,concat_ws(' - ', m.nombre, f.nombre) modelo_fabricante, u.nombre lugar_ubicacion, e.serial, e.estado    FROM equipos AS e    INNER JOIN tipos_equipo AS te ON te.id_tipo_equipo=e.id_tipo_equipo  LEFT JOIN modelos AS m ON m.id_modelo=e.id_modelo LEFT JOIN ubicaciones AS u ON u.id_ubicacion=e.id_ubicacion LEFT JOIN fabricantes AS f ON f.id_fabricante = m.id_fabricante ", (error, registros)=>{
+        if(error){
+            console.log('Error en la base de datos', error)
+        }else{
+            res.json(registros)
+        }
+    })
+})
+
+// listar de equipos con filtros
+// metodo POST
+//URL /equipos_filtrado
+//parametros : xxxxx
+router.post('/equipos_filtrado', bodyParser.json(),  (req , res)=>{
+    const { id_modelo, nombre_equipo, id_ubicacion, id_tipo_equipo, serial } = req.body
+    // console.log(id_modelo)
+    let my_query ="SELECT e.id_equipo, e.id_modelo ,e.nombre, te.nombre tipo_equipo ,concat_ws(' - ', m.nombre, f.nombre) modelo_fabricante, u.nombre lugar_ubicacion, e.serial, e.estado    FROM equipos AS e    INNER JOIN tipos_equipo AS te ON te.id_tipo_equipo=e.id_tipo_equipo  LEFT JOIN modelos AS m ON m.id_modelo=e.id_modelo LEFT JOIN ubicaciones AS u ON u.id_ubicacion=e.id_ubicacion LEFT JOIN fabricantes AS f ON f.id_fabricante = m.id_fabricante WHERE 1 ";
+    
+    if(id_modelo){
+        my_query = my_query + ` AND e.id_modelo='${id_modelo}'`;
+    }
+    if(id_ubicacion){
+        my_query = my_query + ` AND e.id_ubicacion='${id_ubicacion}'`;
+    }
+    if(nombre_equipo){
+        my_query = my_query + ` AND e.nombre like '%${nombre_equipo}%'`;
+    }
+    if(id_tipo_equipo){
+        my_query = my_query + ` AND e.id_tipo_equipo='${id_tipo_equipo}'`;
+    }
+    if(serial){
+        my_query = my_query + ` AND e.serial like '%${serial}%'`;
+    }
+   
+    
+    console.log(my_query);
+
+    mysqlConnect.query(my_query, (error, registros)=>{
+        if(error){
+            console.log('Error en la base de datos', error)
+        }else{
+            res.json(registros)
+        }
+    })
+})
+
 
 module.exports= router;

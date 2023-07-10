@@ -117,7 +117,7 @@ LEFT JOIN fabricantes AS f ON f.id_fabricante = m.id_fabricante
 WHERE 
 filtro1-->  e.nombre like '%(variable)%'
 filtro2-->  e.id_tipo_equipo = '(variable)'
-filtro2-->  e.id_tipo_equipo = '(variable)'
+filtro3-->  e.id_modelo = '(variable)'
 filtro4-->  e.id_ubicacion = '(variable)'
 filtro5-->  e.serial like '%variable%'
 
