@@ -349,7 +349,8 @@ router.get('/equipos', (req , res)=>{
 // listar de equipos con filtros
 // metodo POST
 //URL /equipos_filtrado
-//parametros : xxxxx
+//parametros : 
+    // filtros: id_modelo, nombre_equipo, id_ubicacion, id_tipo_equipo, serial
 router.post('/equipos_filtrado', bodyParser.json(),  (req , res)=>{
     const { id_modelo, nombre_equipo, id_ubicacion, id_tipo_equipo, serial } = req.body
     // console.log(id_modelo)
@@ -382,6 +383,109 @@ router.post('/equipos_filtrado', bodyParser.json(),  (req , res)=>{
         }
     })
 })
+////////////////////insert de equipos
 
+// metodo POST
+//URL /equipos/
+//parametros : en el cuerpo(body) 
+    // nombre, id_modelo, id_tipo_equipo, id_ubicacion, serial
+
+router.post('/equipos', bodyParser.json(), (req , res)=>{
+    const { nombre_equipo, id_modelo, id_tipo_equipo, id_ubicacion, serial }  = req.body
+    if(!nombre_equipo){
+        res.json({
+            status:false,
+            mensaje: "El nombre del equipo es un campo obligatorio"
+        })
+    }
+    if(!id_modelo){
+        res.json({
+            status:false,
+            mensaje: "El modelo del equipo es un campo obligatorio"
+        })
+    }
+    if(!id_tipo_equipo){
+        res.json({
+            status:false,
+            mensaje: "El tipo de equipo es un campo obligatorio"
+        })
+    }
+    if(!id_ubicacion){
+        res.json({
+            status:false,
+            mensaje: "La ubicacion del equipo es un campo obligatorio"
+        })
+    }
+    mysqlConnect.query('INSERT INTO equipos (nombre, id_modelo, id_tipo_equipo, id_ubicacion, serial ) VALUES (?,?,?,?,?)', [nombre_equipo, id_modelo, id_tipo_equipo, id_ubicacion, serial ], (error, registros)=>{
+        if(error){
+            console.log('Error en la base de datos', error)
+        }else{
+        res.json({
+            status:true,
+            mensaje: "El registro se grabo correctamente"
+        })
+        }
+    })
+})
+// traer los  datos del equipo por el ID
+
+// metodo GET
+//URL /equipos/:id_equipo
+//parametros : id_equipo
+router.get('/equipos/:id_equipo', (req , res)=>{
+    const { id_equipo } = req.params
+    mysqlConnect.query('SELECT * FROM equipos WHERE id_equipo=?', [id_equipo], (error, registros)=>{
+        if(error){
+            console.log('Error en la base de datos', error)
+        }else{
+            if(registros.length>0){
+                res.json({
+                    status:true,
+                    datos: registros
+                })
+            }else{
+                res.json({
+                    status:false,
+                    mensaje:"El ID del equipo no existe" 
+                })
+            }
+            
+        }
+    })
+})
+
+// metodo DELETE
+//URL /equipos/:id_equipo
+//parametros : 
+    // y el parametro que vamos a borrar logicamente ->id_equipo
+router.delete('/equipos/:id_equipo', bodyParser.json(), (req , res)=>{
+    const { id_equipo } = req.params
+    mysqlConnect.query('SELECT * FROM equipos WHERE id_equipo=?', [id_equipo], (error, registros)=>{
+        if(error){
+            console.log('Error en la base de datos', error)
+        }else{
+            if(registros.length>0){
+                mysqlConnect.query('UPDATE equipos SET estado = "B"  WHERE id_equipo = ?', [id_equipo], (error, registros)=>{
+                    if(error){
+                        console.log('Error en la base de datos', error)
+                    }else{
+                        res.json({
+                            status:true,
+                            mensaje:"El registro " +id_equipo+ " se dio de baja correctamente" 
+                        })
+                    
+                    }
+                })
+            }else{
+                res.json({
+                    status:false,
+                    mensaje:"El ID del equipo no existe" 
+                })
+            }
+            
+        }
+    })
+    
+})
 
 module.exports= router;
