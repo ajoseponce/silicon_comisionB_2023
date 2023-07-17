@@ -27,7 +27,7 @@ router.get('/modelos/:id_modelo', (req , res)=>{
 ////////////////////insert de modulo
 router.post('/modelos', bodyParser.json(), (req , res)=>{
      const { nombre, id_fabricante }  = req.body
-   
+    
      mysqlConnect.query('INSERT INTO modelos (nombre, id_fabricante) VALUES (?, ?)', [nombre, id_fabricante], (error, registros)=>{
         if(error){
             console.log('Error en la base de datos', error)

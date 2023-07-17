@@ -122,7 +122,63 @@ router.get('/equipos/:id_equipo', (req , res)=>{
         }
     })
 })
+// metodo UPDATE
+//URL /equipos/
+//parametros : 
+    // y el parametro que vamos a borrar logicamente ->id_equipo
+    router.put('/equipos/:id_equipo', bodyParser.json(), (req , res)=>{
+        const { id_equipo } = req.params
+        const { id_modelo, nombre_equipo, id_ubicacion, id_tipo_equipo, serial } = req.body
+        if(!nombre_equipo){
+            res.json({
+                status:false,
+                mensaje: "El nombre del equipo es un campo obligatorio"
+            })
+        }
+        if(!id_modelo){
+            res.json({
+                status:false,
+                mensaje: "El modelo del equipo es un campo obligatorio"
+            })
+        }
+        if(!id_tipo_equipo){
+            res.json({
+                status:false,
+                mensaje: "El tipo de equipo es un campo obligatorio"
+            })
+        }
+        if(!id_ubicacion){
+            res.json({
+                status:false,
+                mensaje: "La ubicacion del equipo es un campo obligatorio"
+            })
+        }
+        mysqlConnect.query('SELECT * FROM equipos WHERE id_equipo=?', [id_equipo], (error, registros)=>{
+            if(error){
+                console.log('Error en la base de datos', error)
+            }else{
 
+                if(registros.length>0){
+                    mysqlConnect.query('UPDATE equipos SET nombre=?, id_modelo=?, id_tipo_equipo=?, id_ubicacion=?, serial=?  WHERE id_equipo = ?', [nombre_equipo, id_modelo, id_tipo_equipo, id_ubicacion, serial ,id_equipo], (error, registros)=>{
+                        if(error){
+                            console.log('Error en la base de datos', error)
+                        }else{
+                            res.json({
+                                status:true,
+                                mensaje:"El registro " +id_equipo+ " se edito correctamente" 
+                            })
+                        }
+                    })
+                }else{
+                    res.json({
+                        status:false,
+                        mensaje:"El ID del equipo no existe" 
+                    })
+                }
+                
+            }
+        })  
+    })
 // metodo DELETE
 //URL /equipos/:id_equipo
 //parametros : 
