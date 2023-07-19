@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 
 const bcrypt= require('bcrypt');
 
+const jwt= require('jsonwebtoken');
+
 const router = express()
 
 // listar modelos
@@ -15,6 +17,7 @@ router.get('/', (req , res)=>{
 router.post('/registro', bodyParser.json() , (req , res)=>{
     const {apellido, nombre , dni, user, pass, correo, id_rol} =req.body;
     //
+    //console.log(req.body)
     let hash= bcrypt.hashSync(pass, 10);
     //
     if(!dni){
@@ -23,6 +26,8 @@ router.post('/registro', bodyParser.json() , (req , res)=>{
             mensaje: "El DNI es un campo obligatorio"
         })
     }
+    //  return
+
     mysqlConnect.query('SELECT * FROM usuarios WHERE user=?', [user], (error, usuarios)=>{
         if(error){
             console.log('Error en la base de datos', error)
@@ -38,10 +43,10 @@ router.post('/registro', bodyParser.json() , (req , res)=>{
                     if(error){
                         console.log('Error en la base de datos al momento de insertar ----> ', error)
                     }else{
-                    res.json({
-                        status:true,
-                        mensaje: "El registro se grabo correctamente"
-                    })
+                        res.json({
+                            status:true,
+                            mensaje: "El registro se grabo correctamente"
+                        })
                     }
                 })
             }
@@ -51,11 +56,11 @@ router.post('/registro', bodyParser.json() , (req , res)=>{
 
 router.post('/login', bodyParser.json() , (req , res)=>{
     const {user, pass} =req.body
-    console.log(user)
+    // console.log(user)
     if(!user){
         res.json({
             status:false,
-            mensaje:"El user es un dato obligatorio para el login" 
+            mensaje:"El usuario es un dato obligatorio para el login" 
         }) 
     }
     if(!pass){
@@ -69,12 +74,20 @@ router.post('/login', bodyParser.json() , (req , res)=>{
             console.log('Error en la base de datos', error)
         }else{
             if(usuario.length>0){
-                 
                  const comparacion= bcrypt.compareSync(pass, usuario[0].pass)   
                  if(comparacion)  {
-                    res.json({
-                        status: true
-                    }) 
+
+                    // vamos a generar el token
+                    jwt.sign({usuario}, 'siliconKey', (error, token)=>{
+
+                        res.json({
+                            status: true,
+                            datos: usuario,
+                            token: token
+                        }) 
+                    })
+
+                    
                  }else{
                     res.json({
                         status:false,
