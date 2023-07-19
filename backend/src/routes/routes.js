@@ -56,7 +56,6 @@ router.post('/registro', bodyParser.json() , (req , res)=>{
 
 router.post('/login', bodyParser.json() , (req , res)=>{
     const {user, pass} =req.body
-    // console.log(user)
     if(!user){
         res.json({
             status:false,

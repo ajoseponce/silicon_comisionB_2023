@@ -2,20 +2,31 @@ const express = require('express');
 const mysqlConnect = require('../database/bd')
 const bodyParser = require('body-parser');
 const router = express()
+const jwt = require('jsonwebtoken')
 //////////////////////////////
 //////////////////////////////
 // listar fabricantes
 // metodo GET
 //URL /fabricantes
 //parametros : ninguno
-router.get('/fabricantes', (req , res)=>{
-    mysqlConnect.query('SELECT * FROM fabricantes ', (error, registros)=>{
+router.get('/fabricantes', verificarToken,(req , res)=>{
+    jwt.verify(req.token, 'siliconKey', (error, valido)=>{
         if(error){
-            console.log('Error en la base de datos', error)
+            res.send('ups! algo esta mal!')
         }else{
-            res.json(registros)
+            mysqlConnect.query('SELECT * FROM fabricantes ', (error, registros)=>{
+                if(error){
+                    console.log('Error en la base de datos', error)
+                }else{
+                    res.json(registros)
+                }
+            })
         }
+        
     })
+        
+    
+    
 })
 // traer los  datos del fabricantes por el ID
 
@@ -87,6 +98,15 @@ router.delete('/fabricantes/:id_fabricante', bodyParser.json(), (req , res)=>{
         }
     })
 })
-
+ function verificarToken(req, res, next){
+    const bearer= req.headers['authorization'];
+    if(typeof bearer!=='undefined'){
+        const token =bearer.split(" ")[1]
+        req.token= token;
+        next()
+    }else{
+        res.send('Debe contener un token')
+    }
+ }
 //////////////////////////////
 module.exports= router;
