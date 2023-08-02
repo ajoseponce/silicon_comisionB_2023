@@ -1,0 +1,26 @@
+
+.letra_naranja{
+    color: rgb(241, 89, 34);
+    font-size: 40px;
+    font-family: Helvetica;
+    text-decoration:none;
+}
+ 
+.linea{
+    border-bottom: 2px solid red;
+}
+
+a{
+    font-size: 20px; 
+}
+
+#titulo_azul{
+    color: blue;
+    font-size: 30px;
+}
+
+.letra_verde{
+    color: green;
+    font-size: 30px;
+}
+
