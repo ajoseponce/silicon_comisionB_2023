@@ -25,7 +25,19 @@ export async function Registro(datos){
         }
     }
     const respuesta = await fetch(`${URL}/registro`, Options)
-    //const data= await respuesta.json()
+    const data= await respuesta.json()
+    return data
+}
+
+export async function getEquipos(){
+    const Options={
+        method:'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }
+    const respuesta = await fetch(`${URL}/equipos`, Options)
+    const data= await respuesta.json()
     console.log(data)
     return data
 }

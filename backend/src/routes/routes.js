@@ -73,7 +73,9 @@ router.post('/login', bodyParser.json() , (req , res)=>{
             console.log('Error en la base de datos', error)
         }else{
             if(usuario.length>0){
+                console.log('estado de la comparacion', usuario[0].pass)
                  const comparacion= bcrypt.compareSync(pass, usuario[0].pass)   
+                 console.log('estado de la comparacion', comparacion)
                  if(comparacion)  {
 
                     // vamos a generar el token
