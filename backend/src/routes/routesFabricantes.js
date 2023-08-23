@@ -9,25 +9,16 @@ const jwt = require('jsonwebtoken')
 // metodo GET
 //URL /fabricantes
 //parametros : ninguno
-router.get('/fabricantes', verificarToken,(req , res)=>{
-    jwt.verify(req.token, 'siliconKey', (error, valido)=>{
-        if(error){
-            res.send('ups! algo esta mal!')
-        }else{
-            mysqlConnect.query('SELECT * FROM fabricantes ', (error, registros)=>{
+router.get('/fabricantes',(req , res)=>{
+    
+            mysqlConnect.query('SELECT * FROM fabricantes', (error, registros)=>{
                 if(error){
                     console.log('Error en la base de datos', error)
                 }else{
                     res.json(registros)
                 }
             })
-        }
-        
     })
-        
-    
-    
-})
 // traer los  datos del fabricantes por el ID
 
 // metodo GET

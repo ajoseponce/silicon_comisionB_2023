@@ -15,15 +15,15 @@ import * as API from './servicios/servicios'
             <tr>
                 <td className="letra_roja">Descripcion</td>
                 <td className="letra_roja">Modelo</td>
-                <td className="letra_roja">Luar</td>
+                <td className="letra_roja">Lugar</td>
                 <td className="letra_roja">Estado</td>
             </tr>
-            {equipos.map((eq)=>(
+            {equipos.map((ee)=>(
                 <tr>
-                <td className="borde_negro">{eq.nombre}</td>
-                <td className="borde_negro">{eq.modelo_fabricante}</td>
-                <td className="borde_negro">{eq.lugar_ubicacion}</td>
-                <td className="borde_negro">{eq.estado}</td>
+                <td className="borde_negro">{ee.nombre}</td>
+                <td className="borde_negro">{ee.modelo_fabricante}</td>
+                <td className="borde_negro">{ee.lugar_ubicacion}</td>
+                <td className="borde_negro">{ee.estado}</td>
                 </tr>
             ))}
            

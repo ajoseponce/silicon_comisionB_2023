@@ -13,6 +13,8 @@ export function Menu(){
                     <li><Link to="/">Home</Link></li>
                     <li><Link to="/categorias">Categorias</Link></li>
                     <li><Link to="/equipos">Equipos</Link></li>
+                    <li><Link to="/fabricantes">Fabricantes</Link></li>
+                    <li><Link to="/modelos">Modelos</Link></li>
                     <li><Link to="/usuario">Usuarios</Link></li>
                 </ul>
             </div>

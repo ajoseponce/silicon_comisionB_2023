@@ -60,13 +60,15 @@ router.post('/login', bodyParser.json() , (req , res)=>{
         res.json({
             status:false,
             mensaje:"El usuario es un dato obligatorio para el login" 
-        }) 
+        })
+         return; 
     }
     if(!pass){
         res.json({
             status:false,
             mensaje:"El password es un dato obligatorio para el login" 
         }) 
+        return;
     }
     mysqlConnect.query('SELECT * FROM usuarios WHERE user=?', [user], (error, usuario)=>{
         if(error){
