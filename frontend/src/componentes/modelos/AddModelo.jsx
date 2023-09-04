@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import * as API from './servicios/servicios'
+import * as API from '../../servicios/servicios'
 export function AddModelo(){
     const [nombre, setNombre] = useState('')
     const [id_fabricante, setIdFabricante] = useState('')
@@ -45,6 +45,7 @@ export function AddModelo(){
                   
                  <select onChange={(event)=>setIdFabricante(event.target.value)} className="form-control">
                     {fabricantes.map((f)=>(
+                      
                     <option value={f.id_fabricante}>{f.nombre}</option>
                     ))}
                  </select>

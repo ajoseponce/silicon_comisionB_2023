@@ -1,0 +1,14 @@
+.boton_rojo{
+   background: red;
+    border: 2px solid black;
+}
+
+.boton_verde{
+    background: greenyellow;
+     border: 2px solid black;
+ }
+
+ .boton_azul{
+    background: blueviolet;
+     border: 2px solid black;
+ }

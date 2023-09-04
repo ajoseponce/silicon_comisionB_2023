@@ -56,6 +56,17 @@ export async function getFabricantes(){
     return data
 }
 
+export async function getFabricantesByID(id_fabricante){
+    const Options={
+        method:'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }
+    const respuesta = await fetch(`${URL}/fabricantes/${id_fabricante}`, Options)
+    const data= await respuesta.json();
+    return data[0];
+}
 export async function getModelos(){
     const Options={
         method:'GET',
@@ -80,6 +91,19 @@ export async function deleteFabricante(id_fabricante){
     
 }
 
+export async function ActualizarEstadoFabricante(id_fabricante, actulizar){
+    const Options={
+        method:'DELETE',
+        body: JSON.stringify(actulizar),
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }
+    const respuesta = await fetch(`${URL}/fabricantes/${id_fabricante}`, Options)
+    const data= await respuesta.json()
+    return data;
+}
+
 export async function AddFabricante(datos){
     const Options={
         method:'POST',
@@ -89,6 +113,19 @@ export async function AddFabricante(datos){
         }
     }
     const respuesta = await fetch(`${URL}/fabricantes`, Options)
+    const data= await respuesta.json()
+    return data;
+}
+
+export async function EditFabricante(datos, id_fabricante){
+    const Options={
+        method:'PUT',
+        body: JSON.stringify(datos),
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }
+    const respuesta = await fetch(`${URL}/fabricantes/${id_fabricante}`, Options)
     const data= await respuesta.json()
     return data;
 }

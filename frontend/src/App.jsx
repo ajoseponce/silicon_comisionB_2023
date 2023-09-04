@@ -3,14 +3,17 @@ import { useState } from 'react'
 import './App.css'
 import { Home } from './Home'
 import { Route, Routes } from 'react-router-dom'
+
 import { Login } from './Login'
 import { Principal } from './Principal'
 import { Registro } from './Registro'
-import { Equipos } from './Equipos'
-import { Fabricantes } from './Fabricantes'
-import { Modelos } from './Modelos'
-import { AddFabricante } from './AddFabricante'
-import { AddModelo } from './AddModelo'
+
+import { Fabricantes } from './componentes/fabricantes/Fabricantes'
+import { Equipos } from './componentes/equipos/Equipos'
+import { Modelos } from './componentes/modelos/Modelos'
+import { AddFabricante } from './componentes/fabricantes/AddFabricante'
+import { AddModelo } from './componentes/modelos/AddModelo'
+import { EditFabricante } from './componentes/fabricantes/EditFabricante'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -26,6 +29,7 @@ function App() {
         <Route path='/modelos' element={<Modelos/>}></Route>
         <Route path='/agregarfabricante' element={<AddFabricante/>}></Route>
         <Route path='/agregarmodelo' element={<AddModelo/>}></Route>
+        <Route path='/editfabricante/:id_fabricante' element={<EditFabricante/>}></Route>
       </Routes>
     </>
   )

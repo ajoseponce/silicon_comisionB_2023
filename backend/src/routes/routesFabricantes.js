@@ -71,7 +71,10 @@ router.put('/fabricantes/:id_fabricante', bodyParser.json(), (req , res)=>{
        if(error){
            console.log('Error en la base de datos', error)
        }else{
-           res.send('La edicion de registro ' +id_fabricante+ ' se realizo correctamente')
+        res.json({
+            status:true,
+            mensaje: "La edicion de registro se realizo correctamente"
+            })
        }
    })
 })
@@ -82,13 +85,16 @@ router.put('/fabricantes/:id_fabricante', bodyParser.json(), (req , res)=>{
 //parametros : 
 // y el parametro que vamos a borrar logicamente ->id_fabricante
 router.delete('/fabricantes/:id_fabricante', bodyParser.json(), (req , res)=>{
-
+    const { actualizar }  = req.body
     const { id_fabricante } = req.params
-    mysqlConnect.query('UPDATE fabricantes SET estado = "B"  WHERE id_fabricante = ?', [id_fabricante], (error, registros)=>{
+    mysqlConnect.query('UPDATE fabricantes SET estado = ?  WHERE id_fabricante = ?', [actualizar, id_fabricante], (error, registros)=>{
         if(error){
             console.log('Error en la base de datos', error)
         }else{
-            res.send('El registro ' +id_fabricante+ ' se dio de baja correctamente')
+            res.json({
+                status:true,
+                mensaje: "El cambio de estado se realizo correctamente"
+                })
         }
     })
 })

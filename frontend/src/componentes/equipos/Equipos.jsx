@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import './Equipos.css'
-import * as API from './servicios/servicios'
+import * as API from '../../servicios/servicios'
 
  export function Equipos(){
     const [equipos, setEquipos] = useState([])

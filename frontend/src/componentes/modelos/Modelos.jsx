@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import * as API from './servicios/servicios'
+import * as API from '../../servicios/servicios'
 import { Link } from "react-router-dom";
 export function Modelos(){
     const [modelos, setModelos] = useState([])
