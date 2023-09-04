@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import * as API from './servicios/servicios'
 import './Fabricantes.css'
+import { Link } from "react-router-dom";
 
 export function Fabricantes(){
     const [fabricantes, setFabricantes]=useState([])
@@ -11,14 +12,15 @@ export function Fabricantes(){
 
     const eliminar =(e, id_fabricante)=>{
         e.preventDefault();
-
-        console.log('el id que vamos a eliminar es el ', id_fabricante)
         API.deleteFabricante(id_fabricante);
-        API.getFabricantes().then(setFabricantes);
+        window.location.reload(true)
     }
     return(
         <>
        <table>
+            <tr>
+                <td className="letra_roja" colspan="3"><Link className="borde_negro" to="/agregarfabricante">Agregar</Link></td>    
+            </tr>
             <tr>
                 <td className="letra_roja">Descripcion</td>
                 <td className="letra_roja">Estado</td>

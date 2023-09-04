@@ -30,9 +30,15 @@ router.post('/modelos', bodyParser.json(), (req , res)=>{
     
      mysqlConnect.query('INSERT INTO modelos (nombre, id_fabricante) VALUES (?, ?)', [nombre, id_fabricante], (error, registros)=>{
         if(error){
-            console.log('Error en la base de datos', error)
+            res.json({
+                status:false,
+                mensaje: error
+                })
         }else{
-            res.send('El insert se realizo correctamente')
+            res.json({
+                status:true,
+                mensaje: "El insert se realizo correctamente"
+                })
         }
     })
 })
@@ -56,9 +62,17 @@ router.delete('/modelos/:id_modelo', bodyParser.json(), (req , res)=>{
     const { id_modelo } = req.params
     mysqlConnect.query('DELETE FROM modelos WHERE id_modelo = ?', [id_modelo], (error, registros)=>{
        if(error){
-           console.log('Error en la base de datos', error)
+           
+            res.json({
+            status:false,
+            mensaje: error
+        })
        }else{
-           res.send('La eliminacion del registro ' +id_modelo+ ' se realizo correctamente')
+         res.json({
+            status:true,
+            mensaje: 'La eliminacion del registro ' +id_modelo+ ' se realizo correctamente'
+        })
+          
        }
    })
 })

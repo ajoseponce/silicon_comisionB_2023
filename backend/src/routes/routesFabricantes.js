@@ -48,7 +48,10 @@ router.post('/fabricantes', bodyParser.json(), (req , res)=>{
        if(error){
            console.log('Error en la base de datos', error)
        }else{
-           res.send('El insert se realizo correctamente')
+            res.json({
+            status:true,
+            mensaje: "El insert se realizo correctamente"
+            })
        }
    })
 })
