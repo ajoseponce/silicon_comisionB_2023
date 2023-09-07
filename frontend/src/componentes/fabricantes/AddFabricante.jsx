@@ -5,10 +5,10 @@ import * as API from '../../servicios/servicios'
 export function AddFabricante(){
 const [nombre, setNombre] = useState('')
 const [mensaje, setMensaje] = useState('')
+
 const guardarFabricante = async(event)=>{
     event.preventDefault();
     const respuesta = await API.AddFabricante({nombre})
-    
     if(respuesta.status){
         setMensaje(respuesta.mensaje)
         setTimeout(()=>{

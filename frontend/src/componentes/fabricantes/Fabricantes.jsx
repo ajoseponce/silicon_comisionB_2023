@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import * as API from '../../servicios/servicios'
 import './Fabricantes.css'
 import { Link } from "react-router-dom";
+import { Menu } from "../../menu";
 
 export function Fabricantes(){
     const [fabricantes, setFabricantes]=useState([])
     const [mensaje, setMensaje] = useState('')
+    
     useEffect(()=>{
         API.getFabricantes().then(setFabricantes)
     }, [])
@@ -29,6 +31,7 @@ export function Fabricantes(){
         <div>
             {mensaje}
         </div>
+        <Menu/>
         <table>
             <tr>
                 <td className="letra_roja" colspan="3"><Link className="borde_negro" to="/agregarfabricante">Agregar</Link></td>    

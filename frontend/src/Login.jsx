@@ -7,15 +7,13 @@ import * as API from './servicios/servicios'
 export function Login(){
 const [user, setUsername]= useState('')
 const [pass, setPasword]= useState('')
-const [mitoken, setToken]= useState('')
 
 const ingresar = async(event)=>{
   event.preventDefault();
   const usuario = await API.Login({user, pass})
-   console.log(usuario)
    if(usuario.status){
-    setToken(usuario.token)
-    alert('Pase señor')
+    window.localStorage.setItem('usuario',JSON.stringify(usuario.datos[0]) )
+    window.localStorage.setItem('token', JSON.stringify(usuario.token))
     window.location.href='/principal'
    }else{
     alert(usuario.mensaje)

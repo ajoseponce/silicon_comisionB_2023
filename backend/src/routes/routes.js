@@ -53,6 +53,19 @@ router.post('/registro', bodyParser.json() , (req , res)=>{
         }
     })
 })
+router.get('/menu/:id_rol', (req , res)=>{
+    const { id_rol } = req.params
+    mysqlConnect.query('SELECT * FROM menu WHERE id_rol=?', [id_rol], (error, registros)=>{
+        if(error){
+            console.log('Error en la base de datos', error)
+        }else{
+            res.json({
+                status:true,
+                menu:registros 
+            })
+        }
+    })
+})
 
 router.post('/login', bodyParser.json() , (req , res)=>{
     const {user, pass} =req.body

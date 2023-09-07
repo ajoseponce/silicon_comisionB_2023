@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import './Equipos.css'
 import * as API from '../../servicios/servicios'
+import { Menu } from "../../menu";
 
  export function Equipos(){
     const [equipos, setEquipos] = useState([])
@@ -10,7 +11,7 @@ import * as API from '../../servicios/servicios'
     )
     return(
         <>
-        aqui va el listado de equipos
+        <Menu/>
         <table>
             <tr>
                 <td className="letra_roja">Descripcion</td>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import * as API from '../../servicios/servicios'
 import { Link } from "react-router-dom";
+import { Menu } from "../../menu";
 export function Modelos(){
     const [modelos, setModelos] = useState([])
     useEffect(()=>{
@@ -17,6 +18,7 @@ export function Modelos(){
     }
     return(
         <>
+        <Menu/>
         <table>
             <tr>
                 

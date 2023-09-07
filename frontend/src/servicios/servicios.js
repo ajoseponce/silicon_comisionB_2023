@@ -10,10 +10,8 @@ export async function Login(datos){
             'Content-Type': 'application/json',
         }
     }
-    const respuesta = await fetch(`${URL}/login`, Options)
-
-    const data= await respuesta.json()
-    console.log("vamos a ver que ondis",data)
+    const respuesta = await fetch(`${URL}/login`, Options);
+    const data= await respuesta.json();
     return data
 }
 
@@ -67,6 +65,8 @@ export async function getFabricantesByID(id_fabricante){
     const data= await respuesta.json();
     return data[0];
 }
+
+
 export async function getModelos(){
     const Options={
         method:'GET',
@@ -152,5 +152,17 @@ export async function AddModelo(datos){
     }
     const respuesta = await fetch(`${URL}/modelos`, Options)
     const data= await respuesta.json()
+    return data;
+}
+
+export async function getMenuByRol(id_rol){
+    const Options={
+        method:'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }
+    const respuesta = await fetch(`${URL}/menu/${id_rol}`, Options)
+    const data= await respuesta.json();
     return data;
 }
