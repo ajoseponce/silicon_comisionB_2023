@@ -11,10 +11,11 @@ const [pass, setPasword]= useState('')
 const ingresar = async(event)=>{
   event.preventDefault();
   const usuario = await API.Login({user, pass})
+  console.log(usuario);
    if(usuario.status){
     window.localStorage.setItem('usuario',JSON.stringify(usuario.datos[0]) )
     window.localStorage.setItem('token', JSON.stringify(usuario.token))
-    window.location.href='/principal'
+    window.location.href='/principal';
    }else{
     alert(usuario.mensaje)
    }

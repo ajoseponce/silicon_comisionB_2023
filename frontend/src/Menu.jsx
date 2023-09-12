@@ -12,17 +12,18 @@ export function Menu(){
 
     useEffect(()=>{
         const datos_usuario = JSON.parse(localStorage.getItem('usuario'));
-        if(datos_usuario){
-             window.location.href='/';
-             return;
+
+        if(!datos_usuario){
+            window.location.href='/';
+            return;
         }
         setUser(datos_usuario.apellido+' '+datos_usuario.nombre)
         traer_menu(datos_usuario.id_rol);
     },[])
 
     const traer_menu =  async (id_rol)=>{
-    const datos= await API.getMenuByRol(id_rol);
-    setMenu(datos.menu)
+        const datos= await API.getMenuByRol(id_rol);
+        setMenu(datos.menu)
     }
 
     const salir = ()=>{

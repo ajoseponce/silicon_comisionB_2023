@@ -75,8 +75,32 @@ export async function getModelos(){
         }
     }
     const respuesta = await fetch(`${URL}/modelos`, Options)
-    const data= await respuesta.json()
-    console.log(data)
+    const data= await respuesta.json();
+    return data
+}
+
+export async function getTiposEquipos(){
+    const Options={
+        method:'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }
+    const respuesta = await fetch(`${URL}/tipos_equipo`, Options)
+    const data= await respuesta.json();
+    return data
+}
+
+
+export async function getUbicaciones(){
+    const Options={
+        method:'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }
+    const respuesta = await fetch(`${URL}/ubicaciones`, Options)
+    const data= await respuesta.json();
     return data
 }
 
@@ -117,6 +141,19 @@ export async function AddFabricante(datos){
     return data;
 }
 
+export async function AddEquipo(datos){
+    const Options={
+        method:'POST',
+        body: JSON.stringify(datos),
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }
+    const respuesta = await fetch(`${URL}/equipos`, Options)
+    const data= await respuesta.json()
+    return data;
+}
+
 export async function EditFabricante(datos, id_fabricante){
     const Options={
         method:'PUT',
@@ -126,6 +163,21 @@ export async function EditFabricante(datos, id_fabricante){
         }
     }
     const respuesta = await fetch(`${URL}/fabricantes/${id_fabricante}`, Options)
+    const data= await respuesta.json()
+    return data;
+}
+
+
+export async function EditEquipo(datos, id_equipo){
+    console.log(datos)
+    const Options={
+        method:'PUT',
+        body: JSON.stringify(datos),
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }
+    const respuesta = await fetch(`${URL}/equipos/${id_equipo}`, Options)
     const data= await respuesta.json()
     return data;
 }
@@ -165,4 +217,31 @@ export async function getMenuByRol(id_rol){
     const respuesta = await fetch(`${URL}/menu/${id_rol}`, Options)
     const data= await respuesta.json();
     return data;
+}
+
+export async function ActualizarEstadoEquipo(id_equipo, actualizar){
+    const Options={
+        method:'PUT',
+        body: JSON.stringify(actualizar),
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }
+    const respuesta = await fetch(`${URL}/cambiar_estado_equipos/${id_equipo}`, Options)
+    const data= await respuesta.json()
+    return data;
+}
+
+
+export async function getEquipoByID(id_equipo){
+    const Options={
+        method:'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }
+    const respuesta = await fetch(`${URL}/equipos/${id_equipo}`, Options)
+    const data= await respuesta.json();
+    console.log(data[0])
+    return data[0];
 }

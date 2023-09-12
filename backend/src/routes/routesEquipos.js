@@ -18,6 +18,21 @@ router.get('/equipos', (req , res)=>{
     })
 })
 
+
+router.put('/cambiar_estado_equipos/:id_equipo', bodyParser.json(), (req , res)=>{
+    const { actualizar }  = req.body
+    const { id_equipo } = req.params
+    mysqlConnect.query('UPDATE equipos SET estado = ?  WHERE id_equipo = ?', [actualizar, id_equipo], (error, registros)=>{
+        if(error){
+            console.log('Error en la base de datos', error)
+        }else{
+            res.json({
+                status:true,
+                mensaje: "El cambio de estado se realizo correctamente"
+                })
+        }
+    })
+})
 // listar de equipos con filtros
 // metodo POST
 //URL /equipos_filtrado
@@ -102,21 +117,22 @@ router.post('/equipos', bodyParser.json(), (req , res)=>{
 //URL /equipos/:id_equipo
 //parametros : id_equipo
 router.get('/equipos/:id_equipo', (req , res)=>{
+    
     const { id_equipo } = req.params
+    console.log('entra aqui', id_equipo)
     mysqlConnect.query('SELECT * FROM equipos WHERE id_equipo=?', [id_equipo], (error, registros)=>{
         if(error){
-            console.log('Error en la base de datos', error)
+            res.json({
+                status:false
+            })
         }else{
             if(registros.length>0){
-                res.json({
-                    status:true,
-                    datos: registros
-                })
+                res.json(registros)
             }else{
                 res.json({
                     status:false,
                     mensaje:"El ID del equipo no existe" 
-                })
+                });
             }
             
         }
@@ -129,6 +145,7 @@ router.get('/equipos/:id_equipo', (req , res)=>{
     router.put('/equipos/:id_equipo', bodyParser.json(), (req , res)=>{
         const { id_equipo } = req.params
         const { id_modelo, nombre_equipo, id_ubicacion, id_tipo_equipo, serial } = req.body
+        console.log("esto es el body",req.body)
         if(!nombre_equipo){
             res.json({
                 status:false,

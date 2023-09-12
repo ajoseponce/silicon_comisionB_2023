@@ -14,6 +14,9 @@ import { Modelos } from './componentes/modelos/Modelos'
 import { AddFabricante } from './componentes/fabricantes/AddFabricante'
 import { AddModelo } from './componentes/modelos/AddModelo'
 import { EditFabricante } from './componentes/fabricantes/EditFabricante'
+import { EditEquipo } from './componentes/equipos/EditEquipo'
+import { AddEquipo } from './componentes/equipos/AddEquipo'
+
 
 function App() {
   const [count, setCount] = useState(0)
@@ -28,8 +31,10 @@ function App() {
         <Route path='/fabricantes' element={<Fabricantes/>}></Route>
         <Route path='/modelos' element={<Modelos/>}></Route>
         <Route path='/agregarfabricante' element={<AddFabricante/>}></Route>
+        <Route path='/agregarequipo' element={<AddEquipo/>}></Route>
         <Route path='/agregarmodelo' element={<AddModelo/>}></Route>
         <Route path='/editfabricante/:id_fabricante' element={<EditFabricante/>}></Route>
+        <Route path='/editequipo/:id_equipo' element={<EditEquipo/>}></Route>
       </Routes>
     </>
   )

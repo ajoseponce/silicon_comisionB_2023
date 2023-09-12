@@ -1,7 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import viteLogo from '/vite.svg'
 import { Link } from "react-router-dom";
 export function Home(){
+
+  useEffect(()=>{
+    const datos_usuario = JSON.parse(localStorage.getItem('usuario'));
+
+    if(datos_usuario){
+        window.location.href='/principal';
+        return;
+    }
+    
+},[])
+
     return(
         <>
         <div>
