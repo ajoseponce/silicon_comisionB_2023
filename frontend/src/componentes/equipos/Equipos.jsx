@@ -33,40 +33,40 @@ const cambiar_estado = async (e, id_equipo, estado_actual)=>{
             {mensaje}
         </div>
         <Menu/>
-        <table>
-        <tr>
-                <td className="letra_roja" colspan="3"><Link className="borde_negro" to="/agregarequipo">Agregar</Link></td>    
+        <table class="table table-striped-columns">
+             <thead>
+             <tr>
+                <td  colspan="7" ><Link  class="btn btn-outline-success"  to="/agregarequipo">Agregar</Link></td>    
             </tr>
-            <tr>
-                <td className="letra_roja">Descripcion</td>
-                <td className="letra_roja">Modelo</td>
-                <td className="letra_roja">Tipo</td>
-                <td className="letra_roja">Lugar</td>
-                <td className="letra_roja">Estado</td>
-                <td className="letra_roja" colspan="2">Acciones</td>
-            </tr>
+                <tr>
+                    <th >Descripcion</th>
+                    <th >Modelo</th>
+                    <th >Tipo</th>
+                    <th >Lugar</th>
+                    <th >Estado</th>
+                    <th  colspan="2">Acciones</th>
+                </tr>
+             </thead>
+             <tbody>
             {equipos.map((ee)=>(
                 <tr>
-                <td className="borde_negro">{ee.nombre}</td>
-                <td className="borde_negro">{ee.modelo_fabricante}</td>
-                <td className="borde_negro">{ee.tipo_equipo}</td>
-                <td className="borde_negro">{ee.lugar_ubicacion}</td>
-                <td className="borde_negro">{ee.estado}</td>
-                <td className="borde_negro">
-               
-                    <Link to={`/editequipo/${ee.id_equipo}`} ><button className="boton_verde">Editar</button></Link>
-             
-               
+                <td >{ee.nombre}</td>
+                <td >{ee.modelo_fabricante}</td>
+                <td >{ee.tipo_equipo}</td>
+                <td >{ee.lugar_ubicacion}</td>
+                <td >{ee.estado}</td>
+                <td >
+                    <Link to={`/editequipo/${ee.id_equipo}`} ><button class="btn btn-warning btn-sm">Editar</button></Link>
                 </td>
                 {(ee.estado=="A")?
-                <td className="borde_negro"><button onClick={(event)=>cambiar_estado(event, ee.id_equipo, ee.estado )} className="boton_rojo">Desactivar</button></td>
+                <td><button class="btn btn-danger btn-sm" onClick={(event)=>cambiar_estado(event, ee.id_equipo, ee.estado )}>Desactivar</button></td>
                 :
-                <td className="borde_negro"><button onClick={(event)=>cambiar_estado(event, ee.id_equipo, ee.estado )} className="boton_azul">Activar</button></td>
+                <td><button class="btn btn-success btn-sm" onClick={(event)=>cambiar_estado(event, ee.id_equipo, ee.estado )} >Activar</button></td>
                 }
                 
                 </tr>
             ))}
-           
+           </tbody>
         </table>
         </>
     )

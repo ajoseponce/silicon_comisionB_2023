@@ -19,7 +19,7 @@ import { AddEquipo } from './componentes/equipos/AddEquipo'
 
 
 function App() {
-  const [count, setCount] = useState(0)
+
   return (
     <>
       <Routes>
