@@ -9,10 +9,8 @@ export function Menu(){
     const [menus, setMenu]= useState([])
     const [user, setUser]= useState()
 
-
     useEffect(()=>{
         const datos_usuario = JSON.parse(localStorage.getItem('usuario'));
-
         if(!datos_usuario){
             window.location.href='/';
             return;
@@ -32,8 +30,6 @@ export function Menu(){
     }
     return(
         <>
-            
-
             <nav className="navbar navbar-expand-lg bg-body-tertiary">
                 <div className="container-fluid">
                 <img src={reactLogo} className="logo react" alt="React logo" />

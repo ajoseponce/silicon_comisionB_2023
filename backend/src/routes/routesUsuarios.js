@@ -3,18 +3,20 @@ const mysqlConnect = require('../database/bd')
 const bodyParser = require('body-parser');
 const router = express()
 const jwt = require('jsonwebtoken')
+
+const bcrypt= require('bcrypt');
 //////////////////////////////
 //////////////////////////////
-// listar fabricantes
+// listar usuarios
 // metodo GET
-//URL /fabricantes
+//URL /usuarios
 //parametros : ninguno
-router.get('/fabricantes', verificarToken,(req , res)=>{
+router.get('/usuarios', verificarToken,(req , res)=>{
     jwt.verify(req.token, 'siliconKey', (error, valido)=>{
         if(error){
             res.sendStatus(403);
         }else{
-            mysqlConnect.query('SELECT * FROM fabricantes', (error, registros)=>{
+            mysqlConnect.query('SELECT u.id_usuario, u.apellido, u.nombre, u.user, u.correo, r.nombre rol, u.estado FROM usuarios AS u INNER JOIN roles AS r ON r.id_rol=u.id_rol ', (error, registros)=>{
                 if(error){
                     console.log('Error en la base de datos', error)
                 }else{
@@ -24,14 +26,14 @@ router.get('/fabricantes', verificarToken,(req , res)=>{
         }
     })
 });
-// traer los  datos del fabricantes por el ID
+// traer los  datos del usuarios por el ID
 
 // metodo GET
-//URL /fabricantes/:id_fabricante
+//URL /usuarios/:id_usuario
 //parametros : ninguno
-router.get('/fabricantes/:id_fabricante', (req , res)=>{
-    const { id_fabricante } = req.params
-    mysqlConnect.query('SELECT * FROM fabricantes WHERE id_fabricante=?', [id_fabricante], (error, registros)=>{
+router.get('/usuarios/:id_usuario', (req , res)=>{
+    const { id_usuario } = req.params
+    mysqlConnect.query('SELECT * FROM usuarios WHERE id_usuario=?', [id_usuario], (error, registros)=>{
         if(error){
             console.log('Error en la base de datos', error)
         }else{
@@ -39,17 +41,17 @@ router.get('/fabricantes/:id_fabricante', (req , res)=>{
         }
     })
 })
-////////////////////insert de fabricante
+////////////////////insert de usuario
 
 // metodo POST
-//URL /fabricantes/
+//URL /usuarios/
 //parametros : en el cuerpo(body) 
     // nombre
 
-router.post('/fabricantes', bodyParser.json(), (req , res)=>{
+router.post('/usuarios', bodyParser.json(), (req , res)=>{
     const { nombre }  = req.body
   
-    mysqlConnect.query('INSERT INTO fabricantes (nombre) VALUES (?)', [nombre], (error, registros)=>{
+    mysqlConnect.query('INSERT INTO usuarios (nombre) VALUES (?)', [nombre], (error, registros)=>{
        if(error){
            console.log('Error en la base de datos', error)
        }else{
@@ -62,17 +64,17 @@ router.post('/fabricantes', bodyParser.json(), (req , res)=>{
 })
 
 
-////////////////////edicion de fabricante
+////////////////////edicion de usuario
 // metodo PUT
-//URL /fabricantes/:id_fabricante
+//URL /usuarios/:id_usuario
 //parametros : 
     // en el cuerpo(body) 
     // nombre
-    // y el parametro que vamos a editar ->id_fabricante
-router.put('/fabricantes/:id_fabricante', bodyParser.json(), (req , res)=>{
+    // y el parametro que vamos a editar ->id_usuario
+router.put('/usuarios/:id_usuario', bodyParser.json(), (req , res)=>{
     const { nombre }  = req.body
-    const { id_fabricante } = req.params
-    mysqlConnect.query('UPDATE fabricantes SET nombre = ?  WHERE id_fabricante = ?', [nombre, id_fabricante], (error, registros)=>{
+    const { id_usuario } = req.params
+    mysqlConnect.query('UPDATE usuarios SET nombre = ?  WHERE id_usuario = ?', [nombre, id_usuario], (error, registros)=>{
        if(error){
            console.log('Error en la base de datos', error)
        }else{
@@ -84,15 +86,31 @@ router.put('/fabricantes/:id_fabricante', bodyParser.json(), (req , res)=>{
    })
 })
 
-///////////////////eliminacion de fabricante
+router.put('/resetpass/:id_usuario', bodyParser.json(), (req , res)=>{
+
+    let newPass= bcrypt.hashSync('siliconmisiones', 10);
+    const { id_usuario } = req.params
+    mysqlConnect.query('UPDATE usuarios SET pass = ?  WHERE id_usuario = ?', [newPass, id_usuario], (error, registros)=>{
+       if(error){
+           console.log('Error en la base de datos', error)
+       }else{
+        res.json({
+            status:true,
+            mensaje: "El blanqueo de clave se realizo correctamente"
+            })
+       }
+   })
+})
+
+///////////////////eliminacion de usuario
 // metodo DELETE
-//URL /fabricantes/:id_fabricante
+//URL /usuarios/:id_usuario
 //parametros : 
-// y el parametro que vamos a borrar logicamente ->id_fabricante
-router.delete('/fabricantes/:id_fabricante', bodyParser.json(), (req , res)=>{
+// y el parametro que vamos a borrar logicamente ->id_usuario
+router.delete('/usuarios/:id_usuario', bodyParser.json(), (req , res)=>{
     const { actualizar }  = req.body
-    const { id_fabricante } = req.params
-    mysqlConnect.query('UPDATE fabricantes SET estado = ?  WHERE id_fabricante = ?', [actualizar, id_fabricante], (error, registros)=>{
+    const { id_usuario } = req.params
+    mysqlConnect.query('UPDATE usuarios SET estado = ?  WHERE id_usuario = ?', [actualizar, id_usuario], (error, registros)=>{
         if(error){
             console.log('Error en la base de datos', error)
         }else{

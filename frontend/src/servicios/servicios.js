@@ -28,24 +28,31 @@ export async function Registro(datos){
     const data= await respuesta.json()
     return data
 }
-
-export async function getEquipos(){
-    const Options={
-        method:'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    }
-    const respuesta = await fetch(`${URL}/equipos`, Options)
-    const data= await respuesta.json()
-    return data
+export async function getMenuByRol(id_rol){
+    const token = JSON.parse(localStorage.getItem('token'));
+   const Options={
+       method:'GET',
+       headers: {
+           'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+       }
+   }
+   const respuesta = await fetch(`${URL}/menu/${id_rol}`, Options)
+   const data= await respuesta.json();
+   return data;
 }
 
+
+
+// Inicio de fabricantes
+
 export async function getFabricantes(){
+    const token = JSON.parse(localStorage.getItem('token'));
     const Options={
         method:'GET',
         headers: {
             'Content-Type': 'application/json',
+             Authorization: `Bearer ${token}`,
         }
     }
     const respuesta = await fetch(`${URL}/fabricantes`, Options)
@@ -64,44 +71,6 @@ export async function getFabricantesByID(id_fabricante){
     const respuesta = await fetch(`${URL}/fabricantes/${id_fabricante}`, Options)
     const data= await respuesta.json();
     return data[0];
-}
-
-
-export async function getModelos(){
-    const Options={
-        method:'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    }
-    const respuesta = await fetch(`${URL}/modelos`, Options)
-    const data= await respuesta.json();
-    return data
-}
-
-export async function getTiposEquipos(){
-    const Options={
-        method:'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    }
-    const respuesta = await fetch(`${URL}/tipos_equipo`, Options)
-    const data= await respuesta.json();
-    return data
-}
-
-
-export async function getUbicaciones(){
-    const Options={
-        method:'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    }
-    const respuesta = await fetch(`${URL}/ubicaciones`, Options)
-    const data= await respuesta.json();
-    return data
 }
 
 export async function deleteFabricante(id_fabricante){
@@ -141,18 +110,6 @@ export async function AddFabricante(datos){
     return data;
 }
 
-export async function AddEquipo(datos){
-    const Options={
-        method:'POST',
-        body: JSON.stringify(datos),
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    }
-    const respuesta = await fetch(`${URL}/equipos`, Options)
-    const data= await respuesta.json()
-    return data;
-}
 
 export async function EditFabricante(datos, id_fabricante){
     const Options={
@@ -167,19 +124,19 @@ export async function EditFabricante(datos, id_fabricante){
     return data;
 }
 
+// fin de fabricantes
 
-export async function EditEquipo(datos, id_equipo){
-    console.log(datos)
+// inicio de modelos
+export async function getModelos(){
     const Options={
-        method:'PUT',
-        body: JSON.stringify(datos),
+        method:'GET',
         headers: {
             'Content-Type': 'application/json',
         }
     }
-    const respuesta = await fetch(`${URL}/equipos/${id_equipo}`, Options)
-    const data= await respuesta.json()
-    return data;
+    const respuesta = await fetch(`${URL}/modelos`, Options)
+    const data= await respuesta.json();
+    return data
 }
 
 export async function deleteModelo(id_modelo){
@@ -207,15 +164,62 @@ export async function AddModelo(datos){
     return data;
 }
 
-export async function getMenuByRol(id_rol){
+// fin de  modelos
+
+
+// inicion de tipos de equipo
+export async function getTiposEquipos(){
     const Options={
         method:'GET',
         headers: {
             'Content-Type': 'application/json',
         }
     }
-    const respuesta = await fetch(`${URL}/menu/${id_rol}`, Options)
+    const respuesta = await fetch(`${URL}/tipos_equipo`, Options)
     const data= await respuesta.json();
+    return data
+}
+
+// fin de tipo de equipos
+
+
+// inicio de equipos
+export async function getEquipos(){
+    const Options={
+        method:'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }
+    const respuesta = await fetch(`${URL}/equipos`, Options)
+    const data= await respuesta.json()
+    return data
+}
+export async function AddEquipo(datos){
+    const Options={
+        method:'POST',
+        body: JSON.stringify(datos),
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }
+    const respuesta = await fetch(`${URL}/equipos`, Options)
+    const data= await respuesta.json()
+    return data;
+}
+
+
+export async function EditEquipo(datos, id_equipo){
+    console.log(datos)
+    const Options={
+        method:'PUT',
+        body: JSON.stringify(datos),
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }
+    const respuesta = await fetch(`${URL}/equipos/${id_equipo}`, Options)
+    const data= await respuesta.json()
     return data;
 }
 
@@ -244,4 +248,111 @@ export async function getEquipoByID(id_equipo){
     const data= await respuesta.json();
     console.log(data[0])
     return data[0];
+}
+
+// fin de equipos
+
+//inicio de ubicaciones
+export async function getUbicaciones(){
+    const Options={
+        method:'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }
+    const respuesta = await fetch(`${URL}/ubicaciones`, Options)
+    const data= await respuesta.json();
+    return data
+}
+
+export async function AddUbicacion(datos){
+    const Options={
+        method:'POST',
+        body: JSON.stringify(datos),
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }
+    const respuesta = await fetch(`${URL}/ubicaciones`, Options)
+    const data= await respuesta.json()
+    return data;
+}
+
+export async function getUbicacionesByID(id_ubicacion){
+    const Options={
+        method:'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }
+    const respuesta = await fetch(`${URL}/ubicaciones/${id_ubicacion}`, Options)
+    const data= await respuesta.json();
+    return data[0];
+}
+export async function EditUbicacion(datos, id_ubicacion){
+    const Options={
+        method:'PUT',
+        body: JSON.stringify(datos),
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }
+    const respuesta = await fetch(`${URL}/ubicaciones/${id_ubicacion}`, Options)
+    const data= await respuesta.json()
+    return data;
+}
+
+export async function ActualizarEstadoUbicacion(id_ubicacion, actulizar){
+    const Options={
+        method:'DELETE',
+        body: JSON.stringify(actulizar),
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }
+    const respuesta = await fetch(`${URL}/ubicaciones/${id_ubicacion}`, Options)
+    const data= await respuesta.json()
+    return data;
+}
+
+// fin de ubicaciones
+
+// inicio usuarios
+
+export async function getUsuarios(){
+    const token = JSON.parse(localStorage.getItem('token'));
+    const Options={
+        method:'GET',
+        headers: {
+            'Content-Type': 'application/json',
+             Authorization: `Bearer ${token}`,
+        }
+    }
+    const respuesta = await fetch(`${URL}/usuarios`, Options)
+    const data= await respuesta.json();
+    return data
+}
+
+export async function ActualizarEstadoUsuario(id_usuario, actualizar){
+    const Options={
+        method:'DELETE',
+        body: JSON.stringify(actualizar),
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }
+    const respuesta = await fetch(`${URL}/usuarios/${id_usuario}`, Options)
+    const data= await respuesta.json()
+    return data;
+}
+export async function ResetUsuariosByID(id_usuario){
+    const Options={
+        method:'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }
+    const respuesta = await fetch(`${URL}/resetpass/${id_usuario}`, Options)
+    const data= await respuesta.json()
+    return data;
 }

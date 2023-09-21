@@ -53,15 +53,21 @@ router.post('/registro', bodyParser.json() , (req , res)=>{
         }
     })
 })
-router.get('/menu/:id_rol', (req , res)=>{
-    const { id_rol } = req.params
-    mysqlConnect.query('SELECT * FROM menu WHERE id_rol=?', [id_rol], (error, registros)=>{
+router.get('/menu/:id_rol',verificarToken, (req , res)=>{
+    const { id_rol } = req.params;
+    jwt.verify(req.token, 'siliconKey', (error, valido)=>{
         if(error){
-            console.log('Error en la base de datos', error)
+            res.sendStatus(403);
         }else{
-            res.json({
-                status:true,
-                menu:registros 
+            mysqlConnect.query('SELECT * FROM menu WHERE id_rol=?', [id_rol], (error, registros)=>{
+                if(error){
+                    console.log('Error en la base de datos', error)
+                }else{
+                    res.json({
+                        status:true,
+                        menu:registros 
+                    })
+                }
             })
         }
     })
@@ -122,5 +128,14 @@ router.post('/login', bodyParser.json() , (req , res)=>{
 
 })
 
-
+function verificarToken(req, res, next){
+    const bearer= req.headers['authorization'];
+    if(typeof bearer!=='undefined'){
+        const token =bearer.split(" ")[1]
+        req.token= token;
+        next()
+    }else{
+        res.send('Debe contener un token')
+    }
+ }
 module.exports= router;

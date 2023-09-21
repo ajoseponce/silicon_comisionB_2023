@@ -46,7 +46,10 @@ router.post('/ubicaciones', bodyParser.json(), (req , res)=>{
        if(error){
            console.log('Error en la base de datos', error)
        }else{
-           res.send('El insert se realizo correctamente')
+        res.json({
+            status:true,
+            mensaje: "El insert se realizo correctamente"
+            })
        }
    })
 })
@@ -66,7 +69,10 @@ router.put('/ubicaciones/:id_ubicacion', bodyParser.json(), (req , res)=>{
        if(error){
            console.log('Error en la base de datos', error)
        }else{
-           res.send('La edicion de registro ' +id_ubicacion+ ' se realizo correctamente')
+         res.json({
+            status:true,
+            mensaje: "La actualizacion se realizo correctamente"
+            })
        }
    })
 })
@@ -77,12 +83,17 @@ router.put('/ubicaciones/:id_ubicacion', bodyParser.json(), (req , res)=>{
 //parametros : 
     // y el parametro que vamos a borrar logicamente ->id_ubicacion
 router.delete('/ubicaciones/:id_ubicacion', bodyParser.json(), (req , res)=>{
+
+    const { actualizar }  = req.body
     const { id_ubicacion } = req.params
-    mysqlConnect.query('UPDATE ubicaciones SET estado = "B"  WHERE id_ubicacion = ?', [id_ubicacion], (error, registros)=>{
+    mysqlConnect.query('UPDATE ubicaciones SET estado = ?  WHERE id_ubicacion = ?', [actualizar, id_ubicacion], (error, registros)=>{
         if(error){
             console.log('Error en la base de datos', error)
         }else{
-            res.send('El registro ' +id_ubicacion+ ' se dio de baja correctamente')
+            res.json({
+                status:true,
+                mensaje: "El cambio de estado se realizo correctamente"
+                })
         }
     })
 })

@@ -25,12 +25,16 @@ export function Modelos(){
     }, [])
 
     const eliminar = async(id_modelo)=>{
-        const borrado = await API.deleteModelo(id_modelo);
-        if(borrado.status){
-            window.location.reload(true)
-        }else{
-            alert("No se puede eliminar porque ocurrio el error");
+        if(confirm('Esta seguro de eliminar este registro?')){
+            const borrado = await API.deleteModelo(id_modelo);
+            if(borrado.status){
+
+                window.location.reload(true)
+            }else{
+                alert("No se puede eliminar porque ocurrio el error");
+            }
         }
+        
     }
 
     const guardarModelo = async(event)=>{
@@ -97,6 +101,7 @@ export function Modelos(){
                     
                     <div className="form-floating">
                     <input 
+                    required
                     type="text" 
                     value={nombre}
                     onChange={(event)=>setNombre(event.target.value)}
@@ -107,7 +112,8 @@ export function Modelos(){
                     </div>
                     <div className="form-floating">
                     
-                    <select onChange={(event)=>setIdFabricante(event.target.value)} className="form-control">
+                    <select required onChange={(event)=>setIdFabricante(event.target.value)} className="form-control">
+                    <option selected value="">Seleccione una opcion</option>
                         {fabricantes.map((f)=>(
                         
                         <option value={f.id_fabricante}>{f.nombre}</option>

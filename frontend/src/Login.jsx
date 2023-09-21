@@ -7,6 +7,7 @@ import * as API from './servicios/servicios'
 export function Login(){
 const [user, setUsername]= useState('')
 const [pass, setPasword]= useState('')
+const [mensaje, setMensaje]= useState('')
 
 const ingresar = async(event)=>{
   event.preventDefault();
@@ -17,7 +18,13 @@ const ingresar = async(event)=>{
     window.localStorage.setItem('token', JSON.stringify(usuario.token))
     window.location.href='/principal';
    }else{
-    alert(usuario.mensaje)
+
+    
+    setMensaje(usuario.mensaje)
+        setTimeout(()=>{
+            setMensaje('')
+            
+            }, 5000)
    }
   return;
 }
@@ -29,9 +36,16 @@ const ingresar = async(event)=>{
                     <img src={viteLogo} classNameName="logo" alt="Vite logo" />
                   </a>
                 <h1 className="h3 mb-3 fw-normal">Por favor ingresar</h1>
-                
+                {
+                 mensaje? 
+                <div className="alert alert-warning" role="alert">
+                 {mensaje}
+                </div>
+              :<></>
+                  }
                 <div className="form-floating">
                   <input 
+                  required
                   type="text" 
                   value={user}
                   onChange={(event)=>setUsername(event.target.value)}
@@ -42,7 +56,8 @@ const ingresar = async(event)=>{
                   <label for="floatingInput">Usuario</label>
                 </div>
                 <div className="form-floating">
-                  <input 
+                  <input
+                  required 
                   type="password" 
                   value={pass} 
                   onChange={(event)=>setPasword(event.target.value)}

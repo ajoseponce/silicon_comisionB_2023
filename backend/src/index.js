@@ -32,6 +32,7 @@ app.use(require('./routes/routesUbicaciones'))
 app.use(require('./routes/routesModelos'))
 app.use(require('./routes/routesFabricantes'))
 app.use(require('./routes/routesEquipos'))
+app.use(require('./routes/routesUsuarios'))
 
 app.listen(app.get('puerto'), ()=>{
     console.log('El servidor del profe esta corriendo en el puerto', app.get('puerto'))

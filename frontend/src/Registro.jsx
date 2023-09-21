@@ -78,6 +78,7 @@ export function Registro(){
                 </div>
                 <div className="form-floating">
                   <input 
+                  required
                   type="text" 
                   value={user}
                   onChange={(event)=>setUser(event.target.value)}
@@ -88,6 +89,7 @@ export function Registro(){
                 </div>
                 <div className="form-floating">
                   <input 
+                  required
                   type="password" 
                   value={pass}
                   onChange={(event)=>setPass(event.target.value)}

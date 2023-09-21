@@ -16,6 +16,8 @@ import { AddModelo } from './componentes/modelos/AddModelo'
 import { EditFabricante } from './componentes/fabricantes/EditFabricante'
 import { EditEquipo } from './componentes/equipos/EditEquipo'
 import { AddEquipo } from './componentes/equipos/AddEquipo'
+import { Ubicaciones } from './componentes/ubicaciones/Ubicaciones'
+import { Usuarios } from './componentes/usuarios/Usuarios'
 
 
 function App() {
@@ -29,6 +31,8 @@ function App() {
         <Route path='/registro' element={<Registro/>}></Route>
         <Route path='/equipos' element={<Equipos/>}></Route>
         <Route path='/fabricantes' element={<Fabricantes/>}></Route>
+        <Route path='/ubicaciones' element={<Ubicaciones/>}></Route>
+        <Route path='/usuarios' element={<Usuarios/>}></Route>
         <Route path='/modelos' element={<Modelos/>}></Route>
         <Route path='/agregarfabricante' element={<AddFabricante/>}></Route>
         <Route path='/agregarequipo' element={<AddEquipo/>}></Route>
