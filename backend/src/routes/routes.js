@@ -127,7 +127,29 @@ router.post('/login', bodyParser.json() , (req , res)=>{
     
 
 })
+router.post('/validarnick', bodyParser.json() , (req , res)=>{
+    const { user } = req.body;
+    console.log(user)
+            mysqlConnect.query('SELECT * FROM usuarios WHERE user=?', [user], (error, registros)=>{
+                if(error){
+                    console.log('Error en la base de datos', error)
+                }else{
 
+                    if(registros.length>0){
+                        res.json({
+                            status:true,
+                            mensaje:"El nombre de usuario ya existe" 
+                        })
+                    }else{
+                        res.json({
+                            status:false,
+                           
+                        })
+                    }
+                }
+            })
+       
+})
 function verificarToken(req, res, next){
     const bearer= req.headers['authorization'];
     if(typeof bearer!=='undefined'){

@@ -15,6 +15,22 @@ export async function Login(datos){
     return data
 }
 
+//esta es mi funcion es para validar el nick
+export async function ValidarNick(dato){
+    
+    const Options={
+        method:'POST',
+        body: JSON.stringify(dato),
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }
+    const respuesta = await fetch(`${URL}/validarnick`, Options);
+    const data= await respuesta.json();
+    console.log('respuesta', data)
+    return data
+}
+
 //esta es mi funcion para loguearme
 export async function Registro(datos){
     const Options={
