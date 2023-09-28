@@ -52,6 +52,7 @@ export function Usuarios(){
     }
     
     useEffect(()=>{
+        
         API.getUsuarios().then(setUsuarios)
     }, [])
 
@@ -75,12 +76,23 @@ export function Usuarios(){
                 .then((respuesta) => {
                     if(respuesta.status){
                         setMensaje(respuesta.mensaje)
-                        API.getUsuarios().then(setUsuarios)
-                        Swal.fire(
-                            'Correcto!',
-                            mensaje,
-                            'success'
-                          )   
+                        console.log('acrtualizar', actualizar)
+                        const datos_usuario = JSON.parse(localStorage.getItem('usuario'));
+                        console.log('user', datos_usuario.id_usuario)
+                        console.log('usuario', id_usuario)
+                        if(id_usuario==datos_usuario.id_usuario && actualizar=="B"){
+
+                            localStorage.removeItem('usuario');
+                            window.location.href='/';
+                        }else{
+                            API.getUsuarios().then(setUsuarios)
+                            Swal.fire(
+                                'Correcto!',
+                                mensaje,
+                                'success'
+                              )   
+                        }
+                        
                     }
              
                 })

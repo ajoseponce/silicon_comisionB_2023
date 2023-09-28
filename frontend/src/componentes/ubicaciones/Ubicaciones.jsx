@@ -8,6 +8,7 @@ export function Ubicaciones(){
     const [id_ubicacion, setIdUbicaciones]=useState('')
     const [mensaje, setMensaje] = useState('')
     const [nombre, setNombre] = useState('')
+    const [numero, setNumero] = useState('')
 
     const toastTrigger = document.getElementById('liveToastBtn')
     const toastLiveExample = document.getElementById('liveToast')
@@ -148,7 +149,20 @@ export function Ubicaciones(){
                     />
                     <label for="floatingInput">Nombre del ubicacion</label>
                     </div>
+                    <div className="form-floating">
+                    <input required
+                    type="number" 
+                    value={numero}
+                    onChange={(event) => {
+                        setNumero((event.target.value < 0)?event.target.value * -1:event.target.value);
+                      }}
+                    className="form-control" 
+                    placeholder="Numero"
+                    />
+                    <label for="floatingInput">Numero</label>
+                    </div>
                 </div>
+                
                 <div class="modal-footer">
                 <button className="btn btn-primary" type="submit" >Guardar</button>
                     

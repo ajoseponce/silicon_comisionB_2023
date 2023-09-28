@@ -44,6 +44,20 @@ export async function Registro(datos){
     const data= await respuesta.json()
     return data
 }
+
+
+export async function getUsuariosByID(id_usuario){
+    const Options={
+        method:'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }
+    const respuesta = await fetch(`${URL}/usuarios/${id_usuario}`, Options)
+    const data= await respuesta.json();
+    return data[0];
+}
+
 export async function getMenuByRol(id_rol){
     const token = JSON.parse(localStorage.getItem('token'));
    const Options={
