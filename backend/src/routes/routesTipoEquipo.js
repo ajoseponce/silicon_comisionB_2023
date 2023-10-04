@@ -3,6 +3,7 @@ const express = require('express');
 const mysqlConnect = require('../database/bd')
 const bodyParser = require('body-parser');
 const router = express()
+const jwt = require('jsonwebtoken')
 //////////////////////////////
 //////////////////////////////
 //////////////////////////////
@@ -10,12 +11,18 @@ const router = express()
 // metodo GET
 //URL /tipos_equipo
 //parametros : ninguno
-router.get('/tipos_equipo', (req , res)=>{
-    mysqlConnect.query('SELECT * FROM tipos_equipo ', (error, registros)=>{
+router.get('/tipos_equipo', verificarToken, (req , res)=>{
+    jwt.verify(req.token, 'siliconKey', (error, valido)=>{
         if(error){
-            console.log('Error en la base de datos', error)
+            res.sendStatus(403);
         }else{
-            res.json(registros)
+            mysqlConnect.query('SELECT * FROM tipos_equipo ', (error, registros)=>{
+                if(error){
+                    console.log('Error en la base de datos', error)
+                }else{
+                    res.json(registros)
+                }
+            })
         }
     })
 })
@@ -24,13 +31,19 @@ router.get('/tipos_equipo', (req , res)=>{
 // metodo GET
 //URL /tipos_equipo/:id_tipo_equipo
 //parametros : ninguno
-router.get('/tipos_equipo/:id_tipo_equipo', (req , res)=>{
+router.get('/tipos_equipo/:id_tipo_equipo', verificarToken, (req , res)=>{
     const { id_tipo_equipo } = req.params
-    mysqlConnect.query('SELECT * FROM tipos_equipo WHERE id_tipo_equipo=?', [id_tipo_equipo], (error, registros)=>{
+    jwt.verify(req.token, 'siliconKey', (error, valido)=>{
         if(error){
-            console.log('Error en la base de datos', error)
+            res.sendStatus(403);
         }else{
-            res.json(registros)
+            mysqlConnect.query('SELECT * FROM tipos_equipo WHERE id_tipo_equipo=?', [id_tipo_equipo], (error, registros)=>{
+                if(error){
+                    console.log('Error en la base de datos', error)
+                }else{
+                    res.json(registros)
+                }
+            })
         }
     })
 })
@@ -43,14 +56,22 @@ router.get('/tipos_equipo/:id_tipo_equipo', (req , res)=>{
 
 router.post('/tipos_equipo', bodyParser.json(), (req , res)=>{
     const { nombre }  = req.body
-  
-    mysqlConnect.query('INSERT INTO tipos_equipo (nombre) VALUES (?)', [nombre], (error, registros)=>{
-       if(error){
-           console.log('Error en la base de datos', error)
-       }else{
-           res.send('El insert se realizo correctamente')
-       }
-   })
+    jwt.verify(req.token, 'siliconKey', (error, valido)=>{
+        if(error){
+            res.sendStatus(403);
+        }else{
+            mysqlConnect.query('INSERT INTO tipos_equipo (nombre) VALUES (?)', [nombre], (error, registros)=>{
+            if(error){
+                console.log('Error en la base de datos', error)
+            }else{
+                res.json({
+                    status:true,
+                    mensaje: "El registro se realizo correctamente"
+                    })
+            }
+        })
+        }
+    })
 })
 
 
@@ -61,16 +82,25 @@ router.post('/tipos_equipo', bodyParser.json(), (req , res)=>{
     // en el cuerpo(body) 
     // nombre
     // y el parametro que vamos a editar ->id_tipo_equipo
-router.put('/tipos_equipo/:id_tipo_equipo', bodyParser.json(), (req , res)=>{
+router.put('/tipos_equipo/:id_tipo_equipo', bodyParser.json(), verificarToken, (req , res)=>{
     const { nombre }  = req.body
     const { id_tipo_equipo } = req.params
-    mysqlConnect.query('UPDATE tipos_equipo SET nombre = ?  WHERE id_tipo_equipo = ?', [nombre, id_tipo_equipo], (error, registros)=>{
-       if(error){
-           console.log('Error en la base de datos', error)
-       }else{
-           res.send('La edicion de registro ' +id_tipo_equipo+ ' se realizo correctamente')
-       }
-   })
+    jwt.verify(req.token, 'siliconKey', (error, valido)=>{
+        if(error){
+            res.sendStatus(403);
+        }else{
+            mysqlConnect.query('UPDATE tipos_equipo SET nombre = ?  WHERE id_tipo_equipo = ?', [nombre, id_tipo_equipo], (error, registros)=>{
+            if(error){
+                console.log('Error en la base de datos', error)
+            }else{
+                res.json({
+                    status:true,
+                    mensaje: "La actualizacion se realizo correctamente"
+                    })
+            }
+            })
+        }
+    })
 })
 
 ///////////////////eliminacion de tipos de equipo
@@ -78,16 +108,38 @@ router.put('/tipos_equipo/:id_tipo_equipo', bodyParser.json(), (req , res)=>{
 //URL /tipos_equipo/:id_tipo_equipo
 //parametros : 
     // y el parametro que vamos a borrar logicamente ->id_tipo_equipo
-router.delete('/tipos_equipo/:id_tipo_equipo', bodyParser.json(), (req , res)=>{
+router.delete('/tipos_equipo/:id_tipo_equipo', bodyParser.json(), verificarToken, (req , res)=>{
+
+    const { actualizar }  = req.body
     const { id_tipo_equipo } = req.params
-    mysqlConnect.query('UPDATE tipos_equipo SET estado = "B"  WHERE id_tipo_equipo = ?', [id_tipo_equipo], (error, registros)=>{
+    jwt.verify(req.token, 'siliconKey', (error, valido)=>{
         if(error){
-            console.log('Error en la base de datos', error)
+            res.sendStatus(403);
         }else{
-            res.send('El registro ' +id_tipo_equipo+ ' se dio de baja correctamente')
+            mysqlConnect.query('UPDATE tipos_equipo SET estado = ?  WHERE id_tipo_equipo = ?', [actualizar, id_tipo_equipo], (error, registros)=>{
+                if(error){
+                    console.log('Error en la base de datos', error)
+                }else{
+                    res.json({
+                        status:true,
+                        mensaje: "El cambio de estado se realizo correctamente"
+                        })
+                }
+            })
         }
     })
 })
+
+function verificarToken(req, res, next){
+    const bearer= req.headers['authorization'];
+    if(typeof bearer!=='undefined'){
+        const token =bearer.split(" ")[1]
+        req.token= token;
+        next()
+    }else{
+        res.send('Debe contener un token')
+    }
+ }
 //////////////////////////////
 //////////////////////////////
 module.exports= router;

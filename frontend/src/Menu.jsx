@@ -15,6 +15,7 @@ export function Menu(){
             window.location.href='/';
             return;
         }
+        
         setUser(datos_usuario.apellido+' '+datos_usuario.nombre)
         traer_menu(datos_usuario.id_rol);
     },[])
@@ -23,6 +24,8 @@ export function Menu(){
         const datos= await API.getMenuByRol(id_rol);
         setMenu(datos.menu)
     }
+
+    
 
     const salir = ()=>{
         localStorage.removeItem('usuario');

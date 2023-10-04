@@ -8,8 +8,7 @@ export function Modelos(){
     const [id_fabricante, setIdFabricante] = useState('')
     const [fabricantes, setFabricantes] = useState([])
     const [mensaje, setMensaje] = useState('')
-
-
+    const [permisoDenegado, setPermisoDenegado] = useState(false)
     const toastTrigger = document.getElementById('liveToastBtn')
     const toastLiveExample = document.getElementById('liveToast')
 
@@ -20,8 +19,11 @@ export function Modelos(){
         })
       }
     useEffect(()=>{
+        const datos_usuario = JSON.parse(localStorage.getItem('usuario'));
+        ver_permisos(datos_usuario.id_rol);
         API.getModelos().then(setModelos)
         API.getFabricantes().then(setFabricantes)
+        
     }, [])
 
     const eliminar = async(id_modelo)=>{
@@ -36,7 +38,7 @@ export function Modelos(){
         }
         
     }
-
+    
     const guardarModelo = async(event)=>{
         event.preventDefault();
         const respuesta = await API.AddModelo({nombre, id_fabricante});
@@ -51,11 +53,25 @@ export function Modelos(){
         }
         return;
     }
-
+    const ver_permisos =  async (id_rol)=>{
+        const menu='/modelos';
+        const respuesta= await API.ver_permisos({id_rol, menu });
+        if(respuesta.status){
+            setPermisoDenegado(true)
+        }else{
+            setPermisoDenegado(false)
+        }
+    }
     return(
         <>
         <Menu/>
-        <table class="table table-striped">
+        {
+        !permisoDenegado? 
+            <div className="alert alert-warning" role="alert">
+            No tiene  permiso para acceder a esta opcion
+            </div>
+            :<>
+            <table class="table table-striped">
         <thead>
             <tr>
                 
@@ -144,6 +160,9 @@ export function Modelos(){
                 </div>
             </div>
         </div>
+            </>
+        }
+        
          </>
     )
 }

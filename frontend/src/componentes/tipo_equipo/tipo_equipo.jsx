@@ -3,13 +3,12 @@ import * as API from '../../servicios/servicios'
 
 import { Menu } from "../../menu";
 
-export function Ubicaciones(){
-    const [ubicaciones, setUbicaciones]=useState([])
-    const [id_ubicacion, setIdUbicaciones]=useState('')
+export function TipoEquipo(){
+    const [tiposequipos, setTiposEquipos]=useState([])
+    const [id_tipo_equipo, setIdTipoEquipo]=useState('')
+    const [nombre, setNombre]=useState('')
     const [mensaje, setMensaje] = useState('')
-    const [nombre, setNombre] = useState('')
-    const [numero, setNumero] = useState('')
-
+    const [permisoDenegado, setPermisoDenegado] = useState(false)
     const toastTrigger = document.getElementById('liveToastBtn')
     const toastLiveExample = document.getElementById('liveToast')
     if (toastTrigger) {
@@ -18,10 +17,30 @@ export function Ubicaciones(){
           toastBootstrap.show()
         })
       }
-    const guardarUbicacion = async(event)=>{
+    useEffect(()=>{
+        const datos_usuario = JSON.parse(localStorage.getItem('usuario'));
+        ver_permisos(datos_usuario.id_rol);
+        API.getTiposEquipos().then(setTiposEquipos)
+    }, [])
+
+
+    const editar_registro = async (e, id_tipo_equipo)=>{
+        e.preventDefault();
+        setIdTipoEquipo(id_tipo_equipo)
+        const datos_te= await API.getTipoEquipoByID(id_tipo_equipo);
+        setNombre(datos_te.nombre)
+    }
+
+     const limpiarModal = async ()=>{
+       
+        setNombre('')
+        setIdTipoEquipo('')
+    }
+
+    const guardarTipoEquipo = async(event)=>{
         event.preventDefault();
-        if(id_ubicacion){
-            const respuesta = await API.EditUbicacion({nombre}, id_ubicacion)
+        if(id_tipo_equipo){
+            const respuesta = await API.EditTipoEquipo({nombre}, id_tipo_equipo)
     
             if(respuesta.status){
                 setMensaje(respuesta.mensaje)
@@ -29,74 +48,66 @@ export function Ubicaciones(){
                 toastBootstrap.show()
                 setTimeout(()=>{
                     setMensaje('')
-                    window.location.href='/ubicaciones'
-                    // API.getUbicaciones().then(setUbicaciones)
+                    toastBootstrap.hide()
+                    API.getTiposEquipos().then(setTiposEquipos)
                     }, 2500)
             }
             return;
         }else{
-            const respuesta = await API.AddUbicacion({nombre})
+            const respuesta = await API.AddTipoEquipo({nombre})
             if(respuesta.status){
                 setMensaje(respuesta.mensaje)
                 const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
                 toastBootstrap.show()
                 setTimeout(()=>{
                     setMensaje('')
-                    window.location.href='/ubicaciones'
-                    // API.getUbicaciones().then(setUbicaciones)
+                    toastBootstrap.hide()
+                    API.getTiposEquipos().then(setTiposEquipos)
                     }, 2500)
             }
             return;
         }
         
     }
-    
-    useEffect(()=>{
-        API.getUbicaciones().then(setUbicaciones)
-    }, [])
-
-    const cambiar_estado = async (e, id_ubicacion, estado_actual)=>{
+    const cambiar_estado = async (e, id_tipo_equipo, estado_actual)=>{
         e.preventDefault();
         const actualizar = (estado_actual=="A")?"B":"A";
-        console.log(actualizar)
-        const respuesta= await API.ActualizarEstadoUbicacion(id_ubicacion, {actualizar});
+        const respuesta= await API.ActualizarEstadoTipoEquipo(id_tipo_equipo, {actualizar});
         if(respuesta.status){
             setMensaje(respuesta.mensaje)
             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
             toastBootstrap.show()
-            API.getUbicaciones().then(setUbicaciones)
+            API.getTiposEquipos().then(setTiposEquipos)
             setTimeout(()=>{
                 setMensaje('')
                 toastBootstrap.hide()
-                
-                // window.location.href='/ubicaciones'
             }, 2500)
         }
-        
     }
-
-    const editar_registro = async (e, id_ubicacion)=>{
-        e.preventDefault();
-        
-        console.log('el id que vamos a editar es el ', id_ubicacion)
-        setIdUbicaciones(id_ubicacion)
-        const datos_ubicacion= await API.getUbicacionesByID(id_ubicacion);
-        console.log(datos_ubicacion)
-        setNombre(datos_ubicacion.nombre)
+    const ver_permisos =  async (id_rol)=>{
+        const menu='/tipos_equipos';
+        const respuesta= await API.ver_permisos({id_rol, menu });
+        if(respuesta.status){
+            setPermisoDenegado(true)
+        }else{
+            setPermisoDenegado(false)
+        }
     }
-
-    
-
     return(
         <>
-        
         <Menu/>
+        {
+        !permisoDenegado? 
+            <div className="alert alert-warning" role="alert">
+            No tiene  permiso para acceder a esta opcion
+            </div>
+            :<>
         <table class="table table-striped">
         <thead>
             <tr>
                 
                 <th colspan="4">
-                <button  class="btn btn-outline-primary  btn-sm"  data-bs-toggle="modal"  data-bs-target="#exampleModal" >Agregar Modal</button>
+                <button  onClick={(event)=>limpiarModal('')}  class="btn btn-outline-primary  btn-sm"  data-bs-toggle="modal"  data-bs-target="#exampleModal" >Agregar</button>
                 </th>    
             </tr>
 
@@ -107,18 +118,20 @@ export function Ubicaciones(){
             </tr>
             </thead>
             <tbody>
-            {ubicaciones.map((ubicacion)=>(
+            {tiposequipos.map((te)=>(
                 <tr>
-                <td >{ubicacion.nombre}</td>    
-                <td >{ubicacion.estado}</td>
+                <td >{te.nombre}</td>    
+                <td >{te.estado}</td>
                 <td >
-                    
-                    <button   data-bs-toggle="modal"  data-bs-target="#exampleModal" onClick={(event)=>editar_registro(event, ubicacion.id_ubicacion)} class="btn btn-outline-warning btn-sm">Editar modal</button>
-                    
-                {(ubicacion.estado=="A")?
-                <button class="btn btn-danger btn-sm" onClick={(event)=>cambiar_estado(event, ubicacion.id_ubicacion, ubicacion.estado )} >Desactivar</button>
+                {(te.estado=="A")?
+                    <button data-bs-toggle="modal"  data-bs-target="#exampleModal" onClick={(event)=>editar_registro(event, te.id_tipo_equipo)} class="btn btn-outline-warning btn-sm">Editar</button>
+                : 
+                    <button disabled class="btn btn-warning btn-sm">Editar</button>
+                }  
+                {(te.estado=="A")?
+                <button class="btn btn-danger btn-sm" onClick={(event)=>cambiar_estado(event, te.id_tipo_equipo, te.estado )} >Desactivar</button>
                 :
-                <button class="btn btn-success btn-sm" onClick={(event)=>cambiar_estado(event, ubicacion.id_ubicacion, ubicacion.estado )} >Activar</button>
+                <button class="btn btn-success btn-sm" onClick={(event)=>cambiar_estado(event, te.id_tipo_equipo, te.estado )} >Activar</button>
                 
                 }
                 </td>
@@ -135,7 +148,7 @@ export function Ubicaciones(){
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Datos del modelo </h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form onSubmit={guardarUbicacion}>
+                <form onSubmit={guardarTipoEquipo}>
                 <div class="modal-body">
                 
                     
@@ -145,22 +158,11 @@ export function Ubicaciones(){
                     value={nombre}
                     onChange={(event)=>setNombre(event.target.value)}
                     className="form-control" 
-                    placeholder="Nombre del ubicacion"
+                    placeholder="Nombre del tipo de equipo"
                     />
-                    <label for="floatingInput">Nombre del ubicacion</label>
+                    <label for="floatingInput">Nombre del tipo de equipo</label>
                     </div>
-                    <div className="form-floating">
-                    <input required
-                    type="number" 
-                    value={numero}
-                    onChange={(event) => {
-                        setNumero((event.target.value < 0)?event.target.value * -1:event.target.value);
-                      }}
-                    className="form-control" 
-                    placeholder="Numero"
-                    />
-                    <label for="floatingInput">Numero</label>
-                    </div>
+                    
                 </div>
                 
                 <div class="modal-footer">
@@ -171,7 +173,6 @@ export function Ubicaciones(){
                 </div>
             </div>
         </div>
-
         <div class="toast-container position-fixed bottom-0 end-0 p-3">
             <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
                 <div class="toast-header">
@@ -186,5 +187,9 @@ export function Ubicaciones(){
             </div>
         </div>
         </>
+        }
+        
+        </>
     )
+    
 }

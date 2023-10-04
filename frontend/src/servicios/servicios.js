@@ -73,6 +73,23 @@ export async function getMenuByRol(id_rol){
 }
 
 
+export async function ver_permisos(datos){
+    const token = JSON.parse(localStorage.getItem('token'));
+   const Options={
+       method:'POST',
+       body: JSON.stringify(datos),
+       headers: {
+           'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+       }
+   }
+   const respuesta = await fetch(`${URL}/menu_permisos`, Options)
+   const data= await respuesta.json();
+   console.log('respuesta de permisos', data)
+   return data;
+}
+
+
 
 // Inicio de fabricantes
 
@@ -199,15 +216,76 @@ export async function AddModelo(datos){
 
 // inicion de tipos de equipo
 export async function getTiposEquipos(){
+    const token = JSON.parse(localStorage.getItem('token'));
     const Options={
         method:'GET',
         headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
         }
     }
     const respuesta = await fetch(`${URL}/tipos_equipo`, Options)
     const data= await respuesta.json();
     return data
+}
+
+export async function getTipoEquipoByID(id_tipo_equipo){
+    const token = JSON.parse(localStorage.getItem('token'));
+    const Options={
+        method:'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        }
+    }
+    const respuesta = await fetch(`${URL}/tipos_equipo/${id_tipo_equipo}`, Options)
+    const data= await respuesta.json();
+    return data[0];
+}
+
+export async function EditTipoEquipo(datos, id_tipo_equipo){
+    const token = JSON.parse(localStorage.getItem('token'));
+    const Options={
+        method:'PUT',
+        body: JSON.stringify(datos),
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        }
+    }
+    const respuesta = await fetch(`${URL}/tipos_equipo/${id_tipo_equipo}`, Options)
+    const data= await respuesta.json()
+    return data;
+}
+
+export async function ActualizarEstadoTipoEquipo(id_tipo_equipo, actualizar){
+    const token = JSON.parse(localStorage.getItem('token'));
+    const Options={
+        method:'DELETE',
+        body: JSON.stringify(actualizar),
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        }
+    }
+    const respuesta = await fetch(`${URL}/tipos_equipo/${id_tipo_equipo}`, Options)
+    const data= await respuesta.json()
+    return data;
+}
+
+export async function AddTipoEquipo(datos){
+    const token = JSON.parse(localStorage.getItem('token'));
+    const Options={
+        method:'POST',
+        body: JSON.stringify(datos),
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        }
+    }
+    const respuesta = await fetch(`${URL}/tipos_equipo`, Options)
+    const data= await respuesta.json()
+    return data;
 }
 
 // fin de tipo de equipos

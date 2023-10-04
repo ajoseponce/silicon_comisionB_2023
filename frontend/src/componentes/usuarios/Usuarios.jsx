@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import * as API from '../../servicios/servicios'
-import { Menu } from "../../Menu";
+import { Menu } from "../../menu";
 import Swal from 'sweetalert2' 
 
 
@@ -9,7 +9,7 @@ export function Usuarios(){
     const [id_usuario, setIdUsuarios]=useState('')
     const [mensaje, setMensaje] = useState('')
     const [nombre, setNombre] = useState('')
-
+    const [permisoDenegado, setPermisoDenegado] = useState(false)
     const toastTrigger = document.getElementById('liveToastBtn')
     const toastLiveExample = document.getElementById('liveToast')
     if (toastTrigger) {
@@ -52,7 +52,8 @@ export function Usuarios(){
     }
     
     useEffect(()=>{
-        
+        const datos_usuario = JSON.parse(localStorage.getItem('usuario'));
+        ver_permisos(datos_usuario.id_rol);
         API.getUsuarios().then(setUsuarios)
     }, [])
 
@@ -138,11 +139,7 @@ export function Usuarios(){
                             mensaje,
                             'success'
                           )
-                        
-                        
-                            
-                           
-                           
+                         
                     }
              
                 })
@@ -152,12 +149,26 @@ export function Usuarios(){
         const datos_usuario= await API.ResetUsuariosByID(id_usuario);
     
     }
-
+    const ver_permisos =  async (id_rol)=>{
+        const menu='/usuarios';
+        const respuesta= await API.ver_permisos({id_rol, menu });
+        if(respuesta.status){
+            setPermisoDenegado(true)
+        }else{
+            setPermisoDenegado(false)
+        }
+    }
 
     return(
         <>
         
         <Menu/>
+        {
+        !permisoDenegado? 
+            <div className="alert alert-warning" role="alert">
+            No tiene  permiso para acceder a esta opcion
+            </div>
+            :<>
         <table class="table table-striped">
         <thead>
             <tr>
@@ -255,6 +266,9 @@ export function Usuarios(){
                 </div>
             </div>
         </div>
+        </>
+        }
+        
         </>
     )
 }
