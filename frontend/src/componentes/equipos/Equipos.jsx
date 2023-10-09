@@ -3,6 +3,7 @@ import './Equipos.css'
 import * as API from '../../servicios/servicios'
 import { Menu } from "../../menu";
 import { Link } from "react-router-dom";
+import { Vigia } from "../../Vigia";
 
  export function Equipos(){
     const [equipos, setEquipos] = useState([])
@@ -33,6 +34,7 @@ const cambiar_estado = async (e, id_equipo, estado_actual)=>{
             {mensaje}
         </div>
         <Menu/>
+        <Vigia/>
         <table class="table table-striped-columns">
              <thead>
              <tr>

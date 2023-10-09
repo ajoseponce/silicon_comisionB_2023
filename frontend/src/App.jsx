@@ -19,6 +19,7 @@ import { AddEquipo } from './componentes/equipos/AddEquipo'
 import { Ubicaciones } from './componentes/ubicaciones/Ubicaciones'
 import { Usuarios } from './componentes/usuarios/Usuarios'
 import { TipoEquipo } from './componentes/tipo_equipo/tipo_equipo'
+import { GenPdf } from './GenPdf'
 
 
 function App() {
@@ -41,6 +42,8 @@ function App() {
         <Route path='/agregarmodelo' element={<AddModelo/>}></Route>
         <Route path='/editfabricante/:id_fabricante' element={<EditFabricante/>}></Route>
         <Route path='/editequipo/:id_equipo' element={<EditEquipo/>}></Route>
+
+        <Route path='/generador' element={<GenPdf/>}></Route>
       </Routes>
     </>
   )

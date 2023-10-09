@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import * as API from '../../servicios/servicios'
 import { Link } from "react-router-dom";
 import { Menu } from "../../menu";
+import { Vigia } from "../../Vigia";
 export function Modelos(){
     const [modelos, setModelos] = useState([])
     const [nombre, setNombre] = useState('')
     const [id_fabricante, setIdFabricante] = useState('')
     const [fabricantes, setFabricantes] = useState([])
     const [mensaje, setMensaje] = useState('')
-    const [permisoDenegado, setPermisoDenegado] = useState(false)
+   
     const toastTrigger = document.getElementById('liveToastBtn')
     const toastLiveExample = document.getElementById('liveToast')
 
@@ -19,8 +20,7 @@ export function Modelos(){
         })
       }
     useEffect(()=>{
-        const datos_usuario = JSON.parse(localStorage.getItem('usuario'));
-        ver_permisos(datos_usuario.id_rol);
+       
         API.getModelos().then(setModelos)
         API.getFabricantes().then(setFabricantes)
         
@@ -53,25 +53,21 @@ export function Modelos(){
         }
         return;
     }
-    const ver_permisos =  async (id_rol)=>{
-        const menu='/modelos';
-        const respuesta= await API.ver_permisos({id_rol, menu });
-        if(respuesta.status){
-            setPermisoDenegado(true)
-        }else{
-            setPermisoDenegado(false)
-        }
-    }
+    // const ver_permisos =  async (id_rol)=>{
+    //     const menu='/modelos';
+    //     const respuesta= await API.ver_permisos({id_rol, menu });
+    //     if(respuesta.status){
+    //         setPermisoDenegado(true)
+    //     }else{
+    //         setPermisoDenegado(false)
+    //     }
+    // }
     return(
         <>
         <Menu/>
-        {
-        !permisoDenegado? 
-            <div className="alert alert-warning" role="alert">
-            No tiene  permiso para acceder a esta opcion
-            </div>
-            :<>
-            <table class="table table-striped">
+        <Vigia/>
+        
+        <table class="table table-striped">
         <thead>
             <tr>
                 
@@ -160,8 +156,7 @@ export function Modelos(){
                 </div>
             </div>
         </div>
-            </>
-        }
+           
         
          </>
     )

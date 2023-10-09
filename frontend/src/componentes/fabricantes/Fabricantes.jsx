@@ -3,6 +3,7 @@ import * as API from '../../servicios/servicios'
 import './Fabricantes.css'
 import { Link } from "react-router-dom";
 import { Menu } from "../../menu";
+import { Vigia } from "../../Vigia";
 
 export function Fabricantes(){
     const [fabricantes, setFabricantes]=useState([])
@@ -90,6 +91,7 @@ export function Fabricantes(){
         <>
         
         <Menu/>
+        <Vigia/>
         <table class="table table-striped">
         <thead>
             <tr>

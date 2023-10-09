@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import * as API from '../../servicios/servicios'
 
 import { Menu } from "../../menu";
+import { Vigia } from "../../Vigia";
 
 export function Ubicaciones(){
     const [ubicaciones, setUbicaciones]=useState([])
@@ -85,16 +86,13 @@ export function Ubicaciones(){
         setNombre(datos_ubicacion.nombre)
     }
 
-    
-
     return(
         <>
-        
         <Menu/>
+        <Vigia/>
         <table class="table table-striped">
         <thead>
             <tr>
-                
                 <th colspan="4">
                 <button  class="btn btn-outline-primary  btn-sm"  data-bs-toggle="modal"  data-bs-target="#exampleModal" >Agregar Modal</button>
                 </th>    

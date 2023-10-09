@@ -47,6 +47,10 @@ export function Menu(){
                         
                         </li>
                     ))}
+                     <li className="nav-item">
+                            <Link  className="nav-link active" aria-current="page"  to='../generador'>Generador</Link>
+                        
+                        </li>
                     <li className="nav-link active"  aria-current="page" >{user}</li>
                     <li><button  class="btn btn-outline-dark" onClick={salir}>Cerrar Session</button></li>
                     </ul>
