@@ -30,7 +30,8 @@ const ingresar = async(event)=>{
 }
     return(
         <>
-          <main className="d-flex align-items-center py-4 bg-body-tertiary">
+            <div class="container-fluid">
+            <main class="form-signin w-100 m-auto">
               <form onSubmit={ingresar}>
                   <a href="https://vitejs.dev" target="_blank">
                     <img src={viteLogo} classNameName="logo" alt="Vite logo" />
@@ -72,6 +73,9 @@ const ingresar = async(event)=>{
                 <p className="mt-5 mb-3 text-body-secondary letra_roja"> En el caso de no tener cuenta <Link to="/registro">Registrarse</Link></p>
               </form>
           </main>
+              
+            </div>
+          
         </>
     )
 }
