@@ -35,6 +35,7 @@ const cambiar_estado = async (e, id_equipo, estado_actual)=>{
         </div>
         <Menu/>
         <Vigia/>
+        <div class="table-responsive small">
         <table class="table table-striped-columns">
              <thead>
              <tr>
@@ -70,6 +71,8 @@ const cambiar_estado = async (e, id_equipo, estado_actual)=>{
             ))}
            </tbody>
         </table>
+        </div>
+        
         </>
     )
  }

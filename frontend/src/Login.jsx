@@ -30,7 +30,7 @@ const ingresar = async(event)=>{
 }
     return(
         <>
-          <main className="form-signin w-100 m-auto">
+          <main className="d-flex align-items-center py-4 bg-body-tertiary">
               <form onSubmit={ingresar}>
                   <a href="https://vitejs.dev" target="_blank">
                     <img src={viteLogo} classNameName="logo" alt="Vite logo" />

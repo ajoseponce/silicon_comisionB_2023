@@ -33,27 +33,28 @@ export function Menu(){
     }
     return(
         <>
-            <nav className="navbar navbar-expand-lg bg-body-tertiary">
+            
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark" aria-label="Third navbar example">
                 <div className="container-fluid">
                 <img src={reactLogo} className="logo react" alt="React logo" />
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                     </button>
                     <div className="collapse navbar-collapse" id="navbarNav">
-                    <ul className="navbar-nav">
-                    {menus.map((m)=>(
-                        <li className="nav-item">
-                            <Link  className="nav-link active" aria-current="page"  to={m.href}>{m.nombre}</Link>
-                        
-                        </li>
-                    ))}
-                     <li className="nav-item">
-                            <Link  className="nav-link active" aria-current="page"  to='../generador'>Generador</Link>
-                        
-                        </li>
-                    <li className="nav-link active"  aria-current="page" >{user}</li>
-                    <li><button  class="btn btn-outline-dark" onClick={salir}>Cerrar Session</button></li>
-                    </ul>
+                            <ul className="navbar-nav">
+                            {menus.map((m)=>(
+                                <li className="nav-item">
+                                    <Link  className="nav-link active" aria-current="page"  to={m.href}>{m.nombre}</Link>
+                                
+                                </li>
+                            ))}
+                                <li className="nav-item">
+                                    <Link  className="nav-link active" aria-current="page"  to='../generador'>Generador</Link>
+                                
+                                </li>
+                            <li className="nav-link active"  aria-current="page" >{user}</li>
+                            <li><button  class="btn btn-danger" onClick={salir}>Cerrar Session</button></li>
+                            </ul>
                     </div>
                 </div>
             </nav>

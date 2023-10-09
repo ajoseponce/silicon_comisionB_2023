@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Menu } from "./menu";
 
+import { Sidebar } from "./Sidebar";
+import { Header } from "./Header";
+import './Principal.css'
 export function Principal(){
 const [usuario, setUsuario]= useState('')
     useEffect(()=>{
@@ -15,8 +17,9 @@ const [usuario, setUsuario]= useState('')
 
     return(
         <>
-        <Menu/>
-       
+        <Header/>
+        <Sidebar/>
+
         </>
     )
 }
