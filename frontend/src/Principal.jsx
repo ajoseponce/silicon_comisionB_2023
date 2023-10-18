@@ -19,7 +19,6 @@ const [usuario, setUsuario]= useState('')
         <>
         <Header/>
         <Sidebar/>
-
         </>
     )
 }

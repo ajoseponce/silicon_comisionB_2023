@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import * as API from '../../servicios/servicios'
 import { Menu } from "../../menu";
 import Swal from 'sweetalert2' 
-
+import { jsPDF } from "jspdf";
+import autoTable from 'jspdf-autotable'
 
 export function Usuarios(){
     const [usuarios, setUsuarios]=useState([])
@@ -54,7 +55,11 @@ export function Usuarios(){
     useEffect(()=>{
         const datos_usuario = JSON.parse(localStorage.getItem('usuario'));
         ver_permisos(datos_usuario.id_rol);
+    
         API.getUsuarios().then(setUsuarios)
+        for (var i = 0; i < usuarios.length; i++) {
+            console.log(usuarios[i]);
+          }
     }, [])
 
     const cambiar_estado = async (e, id_usuario, estado_actual)=>{
@@ -110,6 +115,45 @@ export function Usuarios(){
         const datos_usuario= await API.getUsuariosByID(id_usuario);
         console.log(datos_usuario)
         setNombre(datos_usuario.nombre)
+    }
+
+    const imprimir_ficha = async (e, id_usuario)=>{
+        e.preventDefault();
+        setIdUsuarios(id_usuario)
+        const datos_usuario= await API.getUsuariosByID(id_usuario);
+        console.log(datos_usuario)
+        var doc = new jsPDF({
+            orientation: 'P',
+            unit: 'cm',
+            format: [8, 6]
+          })
+        doc.text("Ficha de Datos ", 1, 1);
+        doc.text("Apellido: "+datos_usuario.apellido, 1, 2);
+        doc.text("Nombre: "+datos_usuario.nombre, 10, 30);
+        doc.text("Dni: "+datos_usuario.dni, 10, 40);
+        doc.save("ficha_usuario_"+datos_usuario.dni+".pdf");
+    }
+
+    const imprimir_Listado = async (e)=>{
+        e.preventDefault();
+       
+        const doc = new jsPDF()
+        doc.text("Listado de Usuarios ", 50, 10);
+       
+        const columnas = ['Apellido Nombre', 'Nick', 'Rol']
+        
+        autoTable(doc, {
+        head: [columnas],
+        body: usuarios.map(usr=>[
+            usr.apellido+' '+usr.nombre, usr.user, usr.rol
+        ])
+            
+            
+            
+        ,
+        })
+        doc.save("listado_usuarios.pdf");
+       
     }
 
     const resetPass = async (e, id_usuario)=>{
@@ -169,7 +213,7 @@ export function Usuarios(){
             No tiene  permiso para acceder a esta opcion
             </div>
             :<>
-        <table class="table table-striped">
+        <table id="mi_listado" class="table table-striped">
         <thead>
             <tr>
                 
@@ -177,8 +221,9 @@ export function Usuarios(){
                 
                 <button  class="btn btn-outline-primary  btn-sm"  data-bs-toggle="modal"  data-bs-target="#exampleModal" ><i class="bi bi-database-add"></i>Agregar</button>
                 &nbsp;
+                <button onClick={(event)=>imprimir_Listado(event)} class="btn btn-info btn-sm"><i class="bi bi-printer"></i>Imprimir</button>
                 
-                <input  type="checkbox"/>Solo Activos
+                {/* <input  type="checkbox"/>Solo Activos */}
                 </th>    
             </tr>
 
@@ -213,6 +258,7 @@ export function Usuarios(){
                 }
                 
                 <button onClick={(event)=>resetPass(event, usuario.id_usuario)} class="btn btn-dark btn-sm"><i class="bi bi-arrow-clockwise"></i>Reset Password</button>
+                <button onClick={(event)=>imprimir_ficha(event, usuario.id_usuario)} class="btn btn-info btn-sm"><i class="bi bi-printer"></i>Imprimir</button>
                 
                
                 </td>
